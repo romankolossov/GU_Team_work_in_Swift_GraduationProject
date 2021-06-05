@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C85B9F8B266B5F8400816C97 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C85B9F8A266B5F8400816C97 /* RealmSwift */; };
+		C85B9F8E266B65C800816C97 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C85B9F8D266B65C800816C97 /* SDWebImage */; };
 		C89809D92665874E009B26D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89809D82665874E009B26D3 /* AppDelegate.swift */; };
 		C89809DB2665874E009B26D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89809DA2665874E009B26D3 /* SceneDelegate.swift */; };
 		C89809DD2665874E009B26D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89809DC2665874E009B26D3 /* ViewController.swift */; };
@@ -66,6 +68,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C85B9F8E266B65C800816C97 /* SDWebImage in Frameworks */,
+				C85B9F8B266B5F8400816C97 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +306,10 @@
 			dependencies = (
 			);
 			name = MariannePV;
+			packageProductDependencies = (
+				C85B9F8A266B5F8400816C97 /* RealmSwift */,
+				C85B9F8D266B65C800816C97 /* SDWebImage */,
+			);
 			productName = MariannePV;
 			productReference = C89809D52665874E009B26D3 /* MariannePV.app */;
 			productType = "com.apple.product-type.application";
@@ -374,6 +382,10 @@
 				ru,
 			);
 			mainGroup = C89809CC2665874D009B26D3;
+			packageReferences = (
+				C85B9F89266B5F8400816C97 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				C85B9F8C266B65C800816C97 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			productRefGroup = C89809D62665874E009B26D3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -790,6 +802,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C85B9F89266B5F8400816C97 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.7.6;
+			};
+		};
+		C85B9F8C266B65C800816C97 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.11.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C85B9F8A266B5F8400816C97 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C85B9F89266B5F8400816C97 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+		C85B9F8D266B65C800816C97 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C85B9F8C266B65C800816C97 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		C89809E12665874E009B26D3 /* MariannePV.xcdatamodeld */ = {
