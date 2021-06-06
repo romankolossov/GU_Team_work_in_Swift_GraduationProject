@@ -5,3 +5,48 @@
   Created by Roman Kolosov on 01.06.2021.
   
 */
+
+//MARK: TO DO
+// TabBarController
+
+"mainTab" = "Pictures";
+"favoritesTab" = "Favorites";
+
+// MainViewController
+
+"mainVCName" = "Lorem photos";
+"reloadData" = "Reloading data...";
+
+//MARK: TO DO
+// FirstViewController
+
+"aboutAppHeader" = "ABOUT";
+"picturesHeader" = "PHOTOS";
+"favoritesHeader" = "FAVORITE";
+
+"aboutAppDescribe" = "\"Marianne\" is a picture viewer application for looking through the Lorem Picsum photos";
+"picturesDescribe" = "Photos taken from: https://picsum.photos";
+"favoritesDescribe" = "Save photos to favorites";
+
+"nextButton" = "NEXT";
+"doneButton" = "DONE";
+
+// SecondViewController
+
+"author" = "by";
+
+//MARK: TO DO
+// FavoritePicturesViewController
+
+"favoritePicturesVCName" = "Favorites";
+
+// Alerts
+
+"error" = "Error";
+//MARK: TO DO
+"actionsWithPicture" = "Picture action";
+"actionsWithPictureDescribe" = "What do You want to do with the photo chosen?";
+"addToFavorite" = "Add to favorites";
+"removeFromFavorite" = "Remove from favorites";
+"success" = "Success";
+"close" = "Close";

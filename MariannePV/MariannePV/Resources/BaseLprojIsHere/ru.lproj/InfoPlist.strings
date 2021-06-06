@@ -5,3 +5,7 @@
   Created by Roman Kolosov on 02.06.2021.
   
 */
+
+"CFBundleDisplayName" = "Мэриан";
+
+"CFBundleName" = "MariannePictureViewer";

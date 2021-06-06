@@ -11,9 +11,38 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    // MARK: - Nested types
+
+    enum TypeInterfaceOrientationMask {
+        case all
+        case portrait
+        case landscape
+    }
+
+    // MARK: - Public properties
+
+    var restrictRotation: TypeInterfaceOrientationMask = .portrait
+
+    // MARK: - Public methods
+
+    // MARK: didFinishLaunchingWithOptions method
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
+    }
+
+    // MARK: supportedInterfaceOrientationsFor UIWindow method
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        switch self.restrictRotation {
+        case .all:
+            return UIInterfaceOrientationMask.all
+        case .portrait:
+            return UIInterfaceOrientationMask.portrait
+        case .landscape:
+            return UIInterfaceOrientationMask.landscape
+        }
     }
 
     // MARK: UISceneSession Lifecycle
