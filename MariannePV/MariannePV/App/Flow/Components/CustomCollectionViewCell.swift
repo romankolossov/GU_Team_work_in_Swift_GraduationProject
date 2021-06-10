@@ -10,13 +10,24 @@ import SDWebImage
 
 class CustomCollectionViewCell: UICollectionViewCell {
 
-    // MARK: - Public properties
-
-    var pictureLabel = UILabel()
-    var pictureImageView = UIImageView()
-
     // MARK: - Private properties
 
+    private lazy var pictureLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .pictureLabelTextColor
+        label.textAlignment = .center
+        label.font = .pictureLabelFont
+        label.clipsToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    private lazy var pictureImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     private var cachedImages: Dictionary = [String: UIImage]()
 
     // MARK: - Initializers
@@ -86,45 +97,37 @@ class CustomCollectionViewCell: UICollectionViewCell {
     // MARK: Configure
 
     private func configureCell() {
-        self.backgroundColor = .tertiarySystemFill
+        self.backgroundColor = .photoCellBackgroundColor
         self.contentView.alpha = 0
 
-        // MARK: Layout subviews
+        self.layer.borderWidth = .photoCellBorderWidth
+        self.layer.borderColor = UIColor.photoCellBorderColor.cgColor
+        self.layer.cornerRadius = .photoCellCornerRadius
 
-        let indent: CGFloat = 3.0
-        let picScale: CGFloat = 16 / 9
+        addSubviews()
+        setupConstraints()
+    }
 
-        let labelHeight: CGFloat = 26.0
-        let labelWidth: CGFloat = ceil(self.bounds.size.width - indent * 2)
+    private func addSubviews() {
+        contentView.addSubview(pictureLabel)
+        contentView.addSubview(pictureImageView)
+    }
 
-        let estimatedPicWidth: CGFloat = ceil((self.bounds.size.height - labelHeight) * picScale)
-        let picWidth: CGFloat = estimatedPicWidth <= self.bounds.size.width ?
-            estimatedPicWidth : self.bounds.size.width
+    private func setupConstraints() {
+        let indent: CGFloat = .photoCellIndent
+        let safeArea = contentView.safeAreaLayoutGuide
 
-        let picX: CGFloat = (self.bounds.size.width - estimatedPicWidth) >= 0 ?
-            ceil(self.bounds.size.width / 2 - estimatedPicWidth / 2) : 0.0
+        NSLayoutConstraint.activate([
+            pictureLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: indent * 2),
+            pictureLabel.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: indent),
+            pictureLabel.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -indent),
+            pictureLabel.heightAnchor.constraint(equalToConstant: .pictureLabelHeight),
 
-        let pictureLabelFrame = CGRect(x: indent,
-                                       y: indent,
-                                       width: labelWidth,
-                                       height: labelHeight)
-        let pictureImageViewFrame = CGRect(x: picX,
-                                           y: ceil(indent + labelHeight),
-                                           width: picWidth,
-                                           height: ceil(self.bounds.size.height - labelHeight))
-
-        // MARK: Configure subviws
-
-        pictureLabel = UILabel(frame: pictureLabelFrame)
-        pictureLabel.font = .systemFont(ofSize: 15)
-        pictureLabel.textColor = .purple
-        pictureLabel.textAlignment = NSTextAlignment.center
-
-        pictureImageView = UIImageView(frame: pictureImageViewFrame)
-        pictureImageView.contentMode = .scaleAspectFit
-
-        self.contentView.addSubview(pictureLabel)
-        self.contentView.addSubview(pictureImageView)
+            pictureImageView.topAnchor.constraint(equalTo: pictureLabel.bottomAnchor, constant: indent * 2),
+            pictureImageView.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: indent),
+            pictureImageView.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -indent),
+            pictureImageView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -indent)
+        ])
     }
 
     // MARK: - Animation methods

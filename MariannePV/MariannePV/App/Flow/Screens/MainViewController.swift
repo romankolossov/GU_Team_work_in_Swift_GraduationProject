@@ -56,7 +56,8 @@ class MainViewController: BaseViewController {
     // MARK: - Actions
 
     @objc private func refresh(_ sender: UIRefreshControl) {
-        NetworkManager.shared.nextFromPage = 2
+        NetworkManager.shared.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
+
         self.loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
@@ -101,7 +102,7 @@ class MainViewController: BaseViewController {
         let layout = PhotoLayout()
 
         collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        collectionView?.backgroundColor = .lightGray
+        collectionView?.backgroundColor = .photoCollectionViewBackgroundColor
 
         collectionView?.dataSource = self
         collectionView?.delegate = self

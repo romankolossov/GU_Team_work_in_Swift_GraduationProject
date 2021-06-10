@@ -24,7 +24,7 @@ class NetworkManager {
 
     // MARK: - Public properties
 
-    var nextFromPage: Int = 2
+    var nextFromPage: Int = .nextPageAfterFirstToStartLoadingFrom
 
     // MARK: - Private properties
 
