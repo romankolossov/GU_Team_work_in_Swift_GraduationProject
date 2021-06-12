@@ -11,7 +11,7 @@ extension Int {
 
     // MARK: - Main VC
 
-    // MARK: Photo collection view layout (Photo layout)
+    // MARK: Picture collection view layout (Photo layout)
 
     static let numberOfColumns: Int = 2
 

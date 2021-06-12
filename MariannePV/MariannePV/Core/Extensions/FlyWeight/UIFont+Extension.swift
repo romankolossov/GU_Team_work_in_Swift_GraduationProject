@@ -11,7 +11,7 @@ extension UIFont {
 
     // MARK: - Main VC
 
-    // MARK: Custom photo collection view cell
+    // MARK: Picture collection view cell
 
     static let pictureLabelFont: UIFont = .preferredFont(forTextStyle: .body)
 

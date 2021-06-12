@@ -11,12 +11,12 @@ extension UIColor {
 
     // MARK: - Main VC
 
-    static let photoCollectionViewBackgroundColor: UIColor = .systemGray
+    static let pictureCollectionViewBackgroundColor: UIColor = .systemGray
 
-    // MARK: Custom photo collection view cell
+    // MARK: Picture collection view cell
 
-    static let photoCellBackgroundColor: UIColor = .brown
-    static let photoCellBorderColor: UIColor = .systemIndigo
+    static let pictureCellBackgroundColor: UIColor = .brown
+    static let pictureCellBorderColor: UIColor = .systemIndigo
     static let pictureLabelTextColor: UIColor = .purple
 
 }

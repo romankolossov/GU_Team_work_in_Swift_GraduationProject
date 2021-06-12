@@ -12,8 +12,8 @@ class MainViewController: BaseViewController {
 
     // MARK: - Public properties
 
-    var publicCellIdentifier: String {
-        cellIdentifier
+    var publicPictureCellIdentifier: String {
+        pictureCellIdentifier
     }
     var publicCollectionViewPhotoService: CollectionViewPhotoService? {
         collectionViewPhotoService
@@ -29,11 +29,11 @@ class MainViewController: BaseViewController {
 
     // MARK: - Private properties
 
-    private let cellIdentifier: String = "CellIdentifier"
+    private let pictureCellIdentifier: String = "PictureCellIdentifier"
     private var collectionViewPhotoService: CollectionViewPhotoService?
     private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
-    private var collectionView: UICollectionView?
+    private var pictureCollectionView: UICollectionView?
     private var refreshControl: UIRefreshControl?
 
     // MARK: - Lifecycle
@@ -46,7 +46,7 @@ class MainViewController: BaseViewController {
         configureCollectionView()
 
         setupRefreshControl()
-        collectionViewPhotoService = CollectionViewPhotoService(container: collectionView)
+        collectionViewPhotoService = CollectionViewPhotoService(container: pictureCollectionView)
 
         if let photos = photos, photos.isEmpty {
             loadData()
@@ -76,7 +76,7 @@ class MainViewController: BaseViewController {
                     let nextPhotos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
                         try? self?.realmManager?.add(objects: nextPhotos)
-                        self?.collectionView?.reloadData()
+                        self?.pictureCollectionView?.reloadData()
                         self?.isLoading = false
                         completion?()
                     }
@@ -101,16 +101,16 @@ class MainViewController: BaseViewController {
         // Custom layout
         let layout = PhotoLayout()
 
-        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        collectionView?.backgroundColor = .photoCollectionViewBackgroundColor
+        pictureCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        pictureCollectionView?.backgroundColor = .pictureCollectionViewBackgroundColor
 
-        collectionView?.dataSource = self
-        collectionView?.delegate = self
-        collectionView?.prefetchDataSource = self
+        pictureCollectionView?.dataSource = self
+        pictureCollectionView?.delegate = self
+        pictureCollectionView?.prefetchDataSource = self
 
-        collectionView?.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: publicCellIdentifier)
+        pictureCollectionView?.register(PictureCollectionViewCell.self, forCellWithReuseIdentifier: publicPictureCellIdentifier)
 
-        guard let collectionSubview = collectionView else {
+        guard let collectionSubview = pictureCollectionView else {
             return
         }
         self.view.addSubview(collectionSubview)
@@ -128,7 +128,7 @@ class MainViewController: BaseViewController {
                     DispatchQueue.main.async { [weak self] in
                         try? self?.realmManager?.deleteAll()
                         try? self?.realmManager?.add(objects: photos)
-                        self?.collectionView?.reloadData()
+                        self?.pictureCollectionView?.reloadData()
                         self?.isLoading = false
                         completion?()
                     }
@@ -148,7 +148,7 @@ class MainViewController: BaseViewController {
         refreshControl?.tintColor = .systemOrange
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 
-        collectionView?.refreshControl = refreshControl
+        pictureCollectionView?.refreshControl = refreshControl
     }
 
 }

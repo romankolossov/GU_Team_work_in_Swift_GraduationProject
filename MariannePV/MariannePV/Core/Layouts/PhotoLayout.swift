@@ -11,7 +11,7 @@ class PhotoLayout: UICollectionViewLayout {
 
     // MARK: - Private properties
 
-    private let cellHeight: CGFloat = .photoCellHeight
+    private let cellHeight: CGFloat = .pictureCellHeight
     private let columnsCount: Int = .numberOfColumns
 
     private var totalCellHeight: CGFloat = 0.0

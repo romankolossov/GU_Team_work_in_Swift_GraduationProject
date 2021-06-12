@@ -13,7 +13,7 @@
 		C85B9F92266B6C0E00816C97 /* CollectionViewPhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F91266B6C0E00816C97 /* CollectionViewPhotoService.swift */; };
 		C85B9F94266B6C2300816C97 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F93266B6C2300816C97 /* RealmManager.swift */; };
 		C85B9F96266B6C3E00816C97 /* PhotoRealmCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F95266B6C3E00816C97 /* PhotoRealmCodable.swift */; };
-		C85B9F98266B6C7B00816C97 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F97266B6C7B00816C97 /* CustomCollectionViewCell.swift */; };
+		C85B9F98266B6C7B00816C97 /* PictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F97266B6C7B00816C97 /* PictureCollectionViewCell.swift */; };
 		C85B9F9A266B6CA600816C97 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F99266B6CA600816C97 /* BaseViewController.swift */; };
 		C85B9F9C266B6CBD00816C97 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F9B266B6CBD00816C97 /* MainViewController.swift */; };
 		C85B9F9E266B6CDA00816C97 /* MainViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F9D266B6CDA00816C97 /* MainViewController+CollectionView.swift */; };
@@ -58,7 +58,7 @@
 		C85B9F91266B6C0E00816C97 /* CollectionViewPhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewPhotoService.swift; sourceTree = "<group>"; };
 		C85B9F93266B6C2300816C97 /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		C85B9F95266B6C3E00816C97 /* PhotoRealmCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoRealmCodable.swift; sourceTree = "<group>"; };
-		C85B9F97266B6C7B00816C97 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		C85B9F97266B6C7B00816C97 /* PictureCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureCollectionViewCell.swift; sourceTree = "<group>"; };
 		C85B9F99266B6CA600816C97 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		C85B9F9B266B6CBD00816C97 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		C85B9F9D266B6CDA00816C97 /* MainViewController+CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MainViewController+CollectionView.swift"; sourceTree = "<group>"; };
@@ -256,7 +256,7 @@
 		C8980A152666D3A7009B26D3 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				C85B9F97266B6C7B00816C97 /* CustomCollectionViewCell.swift */,
+				C85B9F97266B6C7B00816C97 /* PictureCollectionViewCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -515,7 +515,7 @@
 				C85B9F9C266B6CBD00816C97 /* MainViewController.swift in Sources */,
 				C85B9FAE266DC0F200816C97 /* Int+Extension.swift in Sources */,
 				C85B9FAA266DBC1F00816C97 /* UIFont+Extension.swift in Sources */,
-				C85B9F98266B6C7B00816C97 /* CustomCollectionViewCell.swift in Sources */,
+				C85B9F98266B6C7B00816C97 /* PictureCollectionViewCell.swift in Sources */,
 				C85B9F92266B6C0E00816C97 /* CollectionViewPhotoService.swift in Sources */,
 				C85B9FA2266B6D2000816C97 /* PhotoLayout.swift in Sources */,
 				C85B9FA0266B6CEB00816C97 /* SecondViewController.swift in Sources */,

@@ -22,7 +22,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: publicCellIdentifier, for: indexPath) as? CustomCollectionViewCell else { fatalError(description) }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: publicPictureCellIdentifier, for: indexPath) as? PictureCollectionViewCell else { fatalError(description) }
         guard let photos = self.photos else { fatalError(description) }
 
         let photoElementData = photos[indexPath.row]

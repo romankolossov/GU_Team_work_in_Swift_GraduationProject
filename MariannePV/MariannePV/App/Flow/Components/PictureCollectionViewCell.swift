@@ -1,5 +1,5 @@
 //
-//  CustomCollectionViewCell.swift
+//  PictureCollectionViewCell.swift
 //  MariannePictureViewer
 //
 //  Created by Roman Kolosov on 05.06.2021.
@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class CustomCollectionViewCell: UICollectionViewCell {
+class PictureCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private properties
 
@@ -97,12 +97,12 @@ class CustomCollectionViewCell: UICollectionViewCell {
     // MARK: Configure
 
     private func configureCell() {
-        self.backgroundColor = .photoCellBackgroundColor
+        self.backgroundColor = .pictureCellBackgroundColor
         self.contentView.alpha = 0
 
-        self.layer.borderWidth = .photoCellBorderWidth
-        self.layer.borderColor = UIColor.photoCellBorderColor.cgColor
-        self.layer.cornerRadius = .photoCellCornerRadius
+        self.layer.borderWidth = .pictureCellBorderWidth
+        self.layer.borderColor = UIColor.pictureCellBorderColor.cgColor
+        self.layer.cornerRadius = .pictureCellCornerRadius
 
         addSubviews()
         setupConstraints()
@@ -114,7 +114,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
-        let indent: CGFloat = .photoCellIndent
+        let indent: CGFloat = .pictureCellIndent
         let safeArea = contentView.safeAreaLayoutGuide
 
         NSLayoutConstraint.activate([

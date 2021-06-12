@@ -52,11 +52,11 @@ class SecondViewController: BaseViewController {
         /* SDWebImage for image download use end */
 
         /* Way of use RAM, file image caches and network download with CollectionViewPhotoService.
-         For more see explanations in CustomCollectionViewCell.swift file.
+         For more see explanations in PictureCollectionViewCell.swift file.
          In order to use CollectionViewPhotoService, plese
          1. comment the code between "SDWebImage use for image download - SDWebImage use end";
          2. remove comments from the use of photoService for the line bellow;
-         3. perform actions following instructions in CustomCollectionViewCell.swift file.
+         3. perform actions following instructions in PictureCollectionViewCell.swift file.
          */
         // self.pictureImageView.image = photoService?.getPhoto(atIndexPath: indexPath, byUrl: photoStringURL)
     }
