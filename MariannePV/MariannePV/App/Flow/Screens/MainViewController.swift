@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class MainViewController: BaseViewController {
+class MainViewController: UIViewController, AlertShowable {
 
     // MARK: - Public properties
 
@@ -81,7 +81,7 @@ class MainViewController: BaseViewController {
                         completion?()
                     }
                 case let .failure(error):
-                    self?.showAlert(title: self?.localize("error"), message: error.localizedDescription)
+                    self?.showAlert(title: NSLocalizedString("error", comment: ""), message: error.localizedDescription)
                 }
             }
         }
@@ -92,7 +92,7 @@ class MainViewController: BaseViewController {
     // MARK: Configure
 
     private func configureMainVC() {
-        self.title = localize("mainVCName")
+        self.title = NSLocalizedString("mainVCName", comment: "Main view controller name")
 
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -133,7 +133,7 @@ class MainViewController: BaseViewController {
                         completion?()
                     }
                 case let .failure(error):
-                    self?.showAlert(title: self?.localize("error"), message: error.localizedDescription)
+                    self?.showAlert(title: NSLocalizedString("error", comment: ""), message: error.localizedDescription)
                 }
             }
         }
@@ -144,7 +144,7 @@ class MainViewController: BaseViewController {
     private func setupRefreshControl() {
         refreshControl = UIRefreshControl()
 
-        refreshControl?.attributedTitle = NSAttributedString(string: localize("reloadData"), attributes: [.font: UIFont.systemFont(ofSize: 12)])
+        refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("reloadData", comment: ""), attributes: [.font: UIFont.systemFont(ofSize: 12)])
         refreshControl?.tintColor = .systemOrange
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 

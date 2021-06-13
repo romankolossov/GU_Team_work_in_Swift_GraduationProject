@@ -15,4 +15,8 @@ extension UIFont {
 
     static let pictureLabelFont: UIFont = .preferredFont(forTextStyle: .body)
 
+    // MARK: - Alerts
+
+    static let alertTitleFont: UIFont = .preferredFont(forTextStyle: .headline)
+
 }

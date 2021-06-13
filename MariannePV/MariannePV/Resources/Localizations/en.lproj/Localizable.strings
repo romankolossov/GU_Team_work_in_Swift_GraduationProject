@@ -43,10 +43,12 @@
 // Alerts
 
 "error" = "Error";
+"close" = "Close";
+
 //MARK: TO DO
 "actionsWithPicture" = "Picture action";
 "actionsWithPictureDescribe" = "What do You want to do with the photo chosen?";
 "addToFavorite" = "Add to favorites";
 "removeFromFavorite" = "Remove from favorites";
 "success" = "Success";
-"close" = "Close";
+

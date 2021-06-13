@@ -6,6 +6,7 @@
   
 */
 
+//MARK: TO DO
 // TabBarController
 
 "mainTab" = "Фотографии";
@@ -16,6 +17,7 @@
 "mainVCName" = "Фото Lorem";
 "reloadData" = "Загрузка фотографий...";
 
+//MARK: TO DO
 // FirstViewController
 
 "aboutAppHeader" = "О ПРИЛОЖЕНИИ";
@@ -33,6 +35,7 @@
 
 "author" = "автор:";
 
+//MARK: TO DO
 // FavoritePicturesViewController
 
 "favoritePicturesVCName" = "Избранные фотографии";
@@ -40,10 +43,13 @@
 // Alerts
 
 "error" = "Ошибка";
+"close" = "Закрыть";
+
+//MARK: TO DO
 "actionsWithPicture" = "Действия с фотографией";
 "actionsWithPictureDescribe" = "Что необходимо сделать с выбранной фотографией?";
 "addToFavorite" = "Добавить в избранное";
 "removeFromFavorite" = "Удалить из избранного";
 "success" = "Успешно";
-"close" = "Закрыть";
+
 

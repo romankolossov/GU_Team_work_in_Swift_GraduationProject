@@ -19,4 +19,9 @@ extension UIColor {
     static let pictureCellBorderColor: UIColor = .systemIndigo
     static let pictureLabelTextColor: UIColor = .purple
 
+    // MARK: - Alerts
+
+    static let alertTitleTextColor: UIColor = .systemPurple
+    static let alertViewTintColor: UIColor = .systemPurple
+
 }

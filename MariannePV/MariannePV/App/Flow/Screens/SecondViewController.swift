@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class SecondViewController: BaseViewController {
+class SecondViewController: UIViewController {
 
     // MARK: - Public properties
 
@@ -34,7 +34,7 @@ class SecondViewController: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.animateSubviews()
+        animateSubviews()
     }
 
     // MARK: - Public methods
@@ -42,11 +42,10 @@ class SecondViewController: BaseViewController {
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
 
         guard let photoStringURL = photo.downloadURL else { return }
-        self.pictureLabel.text = "\(localize("author")) \(photo.author ?? "")"
+        pictureLabel.text = "\(NSLocalizedString("author", comment: "")) \(photo.author ?? "")"
 
         /* SDWebImage use for image download */
-        self.pictureImageView.sd_setImage(with: URL(string: photoStringURL)) { [weak self] (_, _, _, _) in
-
+        pictureImageView.sd_setImage(with: URL(string: photoStringURL)) { [weak self] (_, _, _, _) in
             self?.animateSubviews()
         }
         /* SDWebImage for image download use end */
