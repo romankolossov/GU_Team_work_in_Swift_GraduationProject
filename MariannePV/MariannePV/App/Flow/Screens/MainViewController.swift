@@ -81,7 +81,10 @@ class MainViewController: UIViewController, AlertShowable {
                         completion?()
                     }
                 case let .failure(error):
-                    self?.showAlert(title: NSLocalizedString("error", comment: ""), message: error.localizedDescription)
+                    self?.showAlert(
+                        title: NSLocalizedString("error", comment: ""),
+                        message: error.localizedDescription
+                    )
                 }
             }
         }
@@ -133,7 +136,10 @@ class MainViewController: UIViewController, AlertShowable {
                         completion?()
                     }
                 case let .failure(error):
-                    self?.showAlert(title: NSLocalizedString("error", comment: ""), message: error.localizedDescription)
+                    self?.showAlert(
+                        title: NSLocalizedString("error", comment: ""),
+                        message: error.localizedDescription
+                    )
                 }
             }
         }
@@ -144,7 +150,7 @@ class MainViewController: UIViewController, AlertShowable {
     private func setupRefreshControl() {
         refreshControl = UIRefreshControl()
 
-        refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("reloadData", comment: ""), attributes: [.font: UIFont.systemFont(ofSize: 12)])
+        refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("reloadData", comment: ""), attributes: [.font: UIFont.refreshControlFont])
         refreshControl?.tintColor = .systemOrange
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 

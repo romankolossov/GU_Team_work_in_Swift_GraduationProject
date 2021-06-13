@@ -19,4 +19,8 @@ extension UIFont {
 
     static let alertTitleFont: UIFont = .preferredFont(forTextStyle: .headline)
 
+    // MARK: Refresh Control
+
+    static let refreshControlFont: UIFont = .systemFont(ofSize: 12)
+
 }

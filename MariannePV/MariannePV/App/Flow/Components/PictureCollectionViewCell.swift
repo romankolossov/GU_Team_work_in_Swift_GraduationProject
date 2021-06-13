@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import OSLog
 
 class PictureCollectionViewCell: UICollectionViewCell {
 
@@ -54,16 +55,14 @@ class PictureCollectionViewCell: UICollectionViewCell {
 
         // RAM cache use
         if let image = cachedImages[photoStringURL] {
-            #if DEBUG
-            // print("\(photoStringURL) : Cached image with SDWebImage")
-            #endif
+            // Logger.viewCycle.debug("\(photoStringURL) : Cached image with SDWebImage")
+
             self.pictureImageView.image = image
             self.pictureLabel.text = photo.author
         } else {
             self.pictureImageView.sd_setImage(with: URL(string: photoStringURL)) { [weak self] (image, _, _, _) in
-                #if DEBUG
-                // print("\(photoStringURL) : Network image with SDWebImage")
-                #endif
+                // Logger.viewCycle.debug("\(photoStringURL) : Network image with SDWebImage")
+
                 self?.pictureLabel.text = photo.author
                 self?.animateSubviews()
 

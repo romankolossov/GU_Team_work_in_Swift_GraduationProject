@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import OSLog
 
 class CollectionViewPhotoService {
 
@@ -60,19 +61,13 @@ class CollectionViewPhotoService {
         var image: UIImage?
 
         if let photo = images[url] {
-            #if DEBUG
-            print("\(url) : RAM cache use with PhotoService")
-            #endif
+            Logger.viewCycle.debug("\(url) : RAM cache use with PhotoService")
             image = photo
         } else if let photo = getImageFromCache(url: url) {
-            #if DEBUG
-            print("\(url) : SDD cache file used with PhotoService")
-            #endif
+            Logger.viewCycle.debug("\(url) : SDD cache file used with PhotoService")
             image = photo
         } else {
-            #if DEBUG
-            print("\(url) : Network download with PhotoService")
-            #endif
+            Logger.viewCycle.debug("\(url) : Network download with PhotoService")
             // MARK: TO DO: isLoading = true
             loadPhoto(atIndexPath: indexPath, byUrl: url)
         }
@@ -113,6 +108,9 @@ class CollectionViewPhotoService {
                     completion?(.failure(DecoderError.failureInJSONdecoding))
                 }
             } else if let error = error {
+                Logger.viewCycle.debug(
+                    "error in session.dataTask of CollectionViewPhotoService in:\n\(#function)"
+                )
                 completion?(.failure(error))
             }
         }
@@ -144,9 +142,9 @@ class CollectionViewPhotoService {
                         // MARK: TO DO: isLoading = false
                     }
                 case let .failure(error):
-                    #if DEBUG
-                    print(error.localizedDescription)
-                    #endif
+                    Logger.viewCycle.debug(
+                        "error in networkRequest of CollectionViewPhotoService in:\n\(#function)\n\(error.localizedDescription)"
+                    )
                 }
             }
         }

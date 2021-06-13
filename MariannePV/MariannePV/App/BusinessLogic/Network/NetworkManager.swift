@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 class NetworkManager {
 
@@ -63,9 +64,8 @@ class NetworkManager {
                 completion?(.failure(.incorrectData))
             }
         }
-        #if DEBUG
-        print("photos loaded from page: ", NetworkManager.shared.nextFromPage)
-        #endif
+        Logger.viewCycle.debug("Photos loaded from page: \(NetworkManager.shared.nextFromPage)")
+
         NetworkManager.shared.nextFromPage = page + 1
     }
 
@@ -104,9 +104,9 @@ class NetworkManager {
                     completion?(.failure(DecoderError.failureInJSONdecoding))
                 }
             } else if let error = error {
-                #if DEBUG
-                print("error in session.dataTask from:\n\(#function)")
-                #endif
+                Logger.viewCycle.debug(
+                    "error in session.dataTask of NetworkManager in:\n\(#function)"
+                )
                 completion?(.failure(error))
             }
         }

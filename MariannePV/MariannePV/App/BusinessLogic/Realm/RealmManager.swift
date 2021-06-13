@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+import OSLog
 
 class RealmManager {
 
@@ -16,10 +17,8 @@ class RealmManager {
         guard let realm = try? Realm(configuration: configuration) else { return nil }
         self.realm = realm
 
-        #if DEBUG
-        print("Realm database file path:")
-        print(realm.configuration.fileURL ?? "")
-        #endif
+        // guard let path = realm.configuration.fileURL else { return }
+        // Logger.viewCycle.debug("Realm database file path:\n\(path)")
     }
 
     // MARK: - Private properties

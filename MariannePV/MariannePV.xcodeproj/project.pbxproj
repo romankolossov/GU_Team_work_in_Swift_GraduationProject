@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C841B3212675D7FE00255544 /* AlertShowable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C841B3202675D7FE00255544 /* AlertShowable+Extension.swift */; };
+		C841B3232675EBB300255544 /* Logger+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C841B3222675EBB300255544 /* Logger+Extension.swift */; };
 		C85B9F8B266B5F8400816C97 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C85B9F8A266B5F8400816C97 /* RealmSwift */; };
 		C85B9F8E266B65C800816C97 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C85B9F8D266B65C800816C97 /* SDWebImage */; };
 		C85B9F90266B6BF400816C97 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F8F266B6BF400816C97 /* NetworkManager.swift */; };
@@ -55,6 +56,7 @@
 
 /* Begin PBXFileReference section */
 		C841B3202675D7FE00255544 /* AlertShowable+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlertShowable+Extension.swift"; sourceTree = "<group>"; };
+		C841B3222675EBB300255544 /* Logger+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Logger+Extension.swift"; sourceTree = "<group>"; };
 		C85B9F8F266B6BF400816C97 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		C85B9F91266B6C0E00816C97 /* CollectionViewPhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewPhotoService.swift; sourceTree = "<group>"; };
 		C85B9F93266B6C2300816C97 /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 		C8980A2C26672475009B26D3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C841B3222675EBB300255544 /* Logger+Extension.swift */,
 				C85B9FA6266DBB9100816C97 /* FlyWeight */,
 			);
 			path = Extensions;
@@ -515,6 +518,7 @@
 				C85B9F90266B6BF400816C97 /* NetworkManager.swift in Sources */,
 				C85B9FAC266DC08B00816C97 /* CGFloat+Extension.swift in Sources */,
 				C841B3212675D7FE00255544 /* AlertShowable+Extension.swift in Sources */,
+				C841B3232675EBB300255544 /* Logger+Extension.swift in Sources */,
 				C89809D92665874E009B26D3 /* AppDelegate.swift in Sources */,
 				C85B9F94266B6C2300816C97 /* RealmManager.swift in Sources */,
 				C89809DB2665874E009B26D3 /* SceneDelegate.swift in Sources */,
