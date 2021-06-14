@@ -20,7 +20,12 @@ extension CGFloat {
     static let pictureCellBorderWidth: CGFloat = 1.0
     static let pictureCellCornerRadius: CGFloat = pictureCellHeight / 11.6
 
-    static let pictureLabelHeight: CGFloat = 17.0
-    static let pictureCellIndent: CGFloat = 4.0
+    static let pictureCellLabelHeight: CGFloat = 17.0
+    static let pictureCellIndent: CGFloat = 3.0
+
+    // MARK: - Second VC
+
+    static let pictureLabelHeight: CGFloat = 24.0
+    static let pictureIndent: CGFloat = 6.0
 
 }

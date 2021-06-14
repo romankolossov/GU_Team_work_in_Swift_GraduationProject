@@ -10,16 +10,31 @@ import SDWebImage
 
 class SecondViewController: UIViewController {
 
-    // MARK: - Public properties
+    // MARK: - Private properties
 
-    var pictureLabel = UILabel()
-    var pictureImageView = UIImageView()
+    private lazy var pictureLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .pictureLabelTextColor
+        label.textAlignment = .center
+        label.font = .pictureLabelFont
+        label.clipsToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    private lazy var pictureImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
 
     // MARK: - Initializers
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        configureSecondVC()
+        addSubviews()
+        setupConstraints()
     }
     @available(*, unavailable) required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -27,9 +42,9 @@ class SecondViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureSecondVC()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -65,36 +80,38 @@ class SecondViewController: UIViewController {
     // MARK: Configure
 
     private func configureSecondVC() {
-        self.view.backgroundColor = .systemYellow
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.tintColor = .navigationBarTintColor
 
-        // MARK: Layout subviews
+        pictureLabel.alpha = 0.0
+        view.backgroundColor = .pictureBackgroundColor
 
-        let indent: CGFloat = 11.0
-        let picScale: CGFloat = 12 / 9
-        let subviewWidth: CGFloat = ceil(self.view.bounds.size.width - indent * 2)
+        (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .all
+    }
 
-        let piclHeight: CGFloat = ceil(subviewWidth * picScale)
-        let picY: CGFloat = ceil(self.view.bounds.size.height / 2 - piclHeight / 2)
+    private func addSubviews() {
+        view.addSubview(pictureLabel)
+        view.addSubview(pictureImageView)
+    }
 
-        let labelHeight: CGFloat = 21.0
-        let labelY: CGFloat = ceil(picY - labelHeight - indent * 1.5)
+    private func setupConstraints() {
+        let indent: CGFloat = .pictureIndent
+        let safeArea = view.safeAreaLayoutGuide
 
-        let pictureLabelFrame = CGRect(x: indent, y: labelY, width: subviewWidth, height: labelHeight)
-        let pictureImageViewFrame = CGRect(x: indent, y: picY, width: subviewWidth, height: piclHeight)
-
-        // MARK: Configure subviws
-
-        pictureLabel = UILabel(frame: pictureLabelFrame)
-        pictureLabel.font = .systemFont(ofSize: 21)
-        pictureLabel.textColor = .blue
-        pictureLabel.textAlignment = NSTextAlignment.center
-        pictureLabel.alpha = 0
-
-        pictureImageView = UIImageView(frame: pictureImageViewFrame)
-        pictureImageView.contentMode = .scaleAspectFit
-
-        self.view.addSubview(pictureLabel)
-        self.view.addSubview(pictureImageView)
+        let pictureLabelConstraints = [
+            pictureLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: indent * 2),
+            pictureLabel.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: indent),
+            pictureLabel.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -indent),
+            pictureLabel.heightAnchor.constraint(equalToConstant: .pictureLabelHeight)
+        ]
+        let pictureImageViewConstraints = [
+            pictureImageView.topAnchor.constraint(equalTo: pictureLabel.bottomAnchor, constant: indent),
+            pictureImageView.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: indent),
+            pictureImageView.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -indent),
+            pictureImageView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -indent)
+        ]
+        NSLayoutConstraint.activate(pictureLabelConstraints)
+        NSLayoutConstraint.activate(pictureImageViewConstraints)
     }
 
     // MARK: Animation methods
@@ -104,7 +121,7 @@ class SecondViewController: UIViewController {
                           duration: 2.1,
                           options: [.transitionCrossDissolve, .curveEaseInOut],
                           animations: {
-                            self.pictureLabel.alpha = 1
+                            self.pictureLabel.alpha = 1.0
                           },
                           completion: nil)
     }

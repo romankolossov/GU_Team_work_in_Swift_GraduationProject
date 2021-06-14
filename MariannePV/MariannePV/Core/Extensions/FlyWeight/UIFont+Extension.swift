@@ -13,7 +13,11 @@ extension UIFont {
 
     // MARK: Picture collection view cell
 
-    static let pictureLabelFont: UIFont = .preferredFont(forTextStyle: .body)
+    static let pictureCellLabelFont: UIFont = .preferredFont(forTextStyle: .body)
+
+    // MARK: - Second VC
+
+    static let pictureLabelFont: UIFont = .italicSystemFont(ofSize: 21)
 
     // MARK: - Alerts
 

@@ -248,8 +248,8 @@
 		C8980A142666D38D009B26D3 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
-				C8980A162666D3B2009B26D3 /* Screens */,
 				C8980A152666D3A7009B26D3 /* Components */,
+				C8980A162666D3B2009B26D3 /* Screens */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -336,8 +336,8 @@
 		C8980A2C26672475009B26D3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C841B3222675EBB300255544 /* Logger+Extension.swift */,
 				C85B9FA6266DBB9100816C97 /* FlyWeight */,
+				C841B3222675EBB300255544 /* Logger+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

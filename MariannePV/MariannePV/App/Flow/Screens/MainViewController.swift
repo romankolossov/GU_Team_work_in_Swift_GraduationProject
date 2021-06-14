@@ -40,11 +40,7 @@ class MainViewController: UIViewController, AlertShowable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
-
-        configureMainVC()
         configureCollectionView()
-
         setupRefreshControl()
         collectionViewPhotoService = CollectionViewPhotoService(container: pictureCollectionView)
 
@@ -53,14 +49,18 @@ class MainViewController: UIViewController, AlertShowable {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureMainVC()
+    }
+
     // MARK: - Actions
 
     @objc private func refresh(_ sender: UIRefreshControl) {
-        NetworkManager.shared.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
-
         self.loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
+        NetworkManager.shared.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
     }
 
     // MARK: - Public methods
@@ -95,9 +95,16 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: Configure
 
     private func configureMainVC() {
-        self.title = NSLocalizedString("mainVCName", comment: "Main view controller name")
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.navigationBarLargeTitleTextColor
+        ]
+        title = NSLocalizedString("mainVCName", comment: "Main view controller name")
 
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.navigationBarTitleTextColor
+        ]
+        (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
     }
 
     private func configureCollectionView() {
@@ -116,7 +123,7 @@ class MainViewController: UIViewController, AlertShowable {
         guard let collectionSubview = pictureCollectionView else {
             return
         }
-        self.view.addSubview(collectionSubview)
+        view.addSubview(collectionSubview)
     }
 
     // MARK: Network methods

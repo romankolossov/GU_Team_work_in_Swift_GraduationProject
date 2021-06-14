@@ -17,8 +17,10 @@ class RealmManager {
         guard let realm = try? Realm(configuration: configuration) else { return nil }
         self.realm = realm
 
-        // guard let path = realm.configuration.fileURL else { return }
-        // Logger.viewCycle.debug("Realm database file path:\n\(path)")
+        #if DEBUG
+        guard let path = realm.configuration.fileURL else { return }
+        Logger.viewCycle.debug("Realm database file path:\n\(path)")
+        #endif
     }
 
     // MARK: - Private properties

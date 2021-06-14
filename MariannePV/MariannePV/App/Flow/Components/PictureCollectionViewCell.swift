@@ -15,9 +15,9 @@ class PictureCollectionViewCell: UICollectionViewCell {
 
     private lazy var pictureLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .pictureLabelTextColor
+        label.textColor = .pictureCellLabelTextColor
         label.textAlignment = .center
-        label.font = .pictureLabelFont
+        label.font = .pictureCellLabelFont
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -97,7 +97,7 @@ class PictureCollectionViewCell: UICollectionViewCell {
 
     private func configureCell() {
         self.backgroundColor = .pictureCellBackgroundColor
-        self.contentView.alpha = 0
+        self.contentView.alpha = 0.0
 
         self.layer.borderWidth = .pictureCellBorderWidth
         self.layer.borderColor = UIColor.pictureCellBorderColor.cgColor
@@ -120,7 +120,7 @@ class PictureCollectionViewCell: UICollectionViewCell {
             pictureLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: indent * 2),
             pictureLabel.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: indent),
             pictureLabel.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -indent),
-            pictureLabel.heightAnchor.constraint(equalToConstant: .pictureLabelHeight),
+            pictureLabel.heightAnchor.constraint(equalToConstant: .pictureCellLabelHeight),
 
             pictureImageView.topAnchor.constraint(equalTo: pictureLabel.bottomAnchor, constant: indent * 2),
             pictureImageView.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: indent),
@@ -137,7 +137,7 @@ class PictureCollectionViewCell: UICollectionViewCell {
                           options: [.transitionCrossDissolve, .curveEaseInOut],
                           animations: {
                             self.backgroundColor = .brown
-                            self.contentView.alpha = 1
+                            self.contentView.alpha = 1.0
                           },
                           completion: nil)
     }

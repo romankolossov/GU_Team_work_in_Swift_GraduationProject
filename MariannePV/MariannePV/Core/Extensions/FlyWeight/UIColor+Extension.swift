@@ -13,11 +13,20 @@ extension UIColor {
 
     static let pictureCollectionViewBackgroundColor: UIColor = .systemGray
 
+    static let navigationBarLargeTitleTextColor: UIColor = pictureBackgroundColor
+    static let navigationBarTitleTextColor: UIColor = navigationBarTintColor
+
     // MARK: Picture collection view cell
 
     static let pictureCellBackgroundColor: UIColor = .brown
     static let pictureCellBorderColor: UIColor = .systemIndigo
-    static let pictureLabelTextColor: UIColor = .purple
+    static let pictureCellLabelTextColor: UIColor = .purple
+
+    // MARK: - Second VC
+
+    static let pictureLabelTextColor: UIColor = .blue
+    static let pictureBackgroundColor: UIColor = .systemYellow
+    static let navigationBarTintColor: UIColor = .systemOrange
 
     // MARK: - Alerts
 
