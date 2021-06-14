@@ -1,5 +1,5 @@
 //
-//  CustomCollectionViewCell.swift
+//  PictureCollectionViewCell.swift
 //  MariannePictureViewer
 //
 //  Created by Roman Kolosov on 05.06.2021.
@@ -7,16 +7,28 @@
 
 import UIKit
 import SDWebImage
+import OSLog
 
-class CustomCollectionViewCell: UICollectionViewCell {
-
-    // MARK: - Public properties
-
-    var pictureLabel = UILabel()
-    var pictureImageView = UIImageView()
+class PictureCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private properties
 
+    private lazy var pictureLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .pictureCellLabelTextColor
+        label.textAlignment = .center
+        label.font = .pictureCellLabelFont
+        label.clipsToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    private lazy var pictureImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     private var cachedImages: Dictionary = [String: UIImage]()
 
     // MARK: - Initializers
@@ -43,16 +55,14 @@ class CustomCollectionViewCell: UICollectionViewCell {
 
         // RAM cache use
         if let image = cachedImages[photoStringURL] {
-            #if DEBUG
-            // print("\(photoStringURL) : Cached image with SDWebImage")
-            #endif
+            // Logger.viewCycle.debug("\(photoStringURL) : Cached image with SDWebImage")
+
             self.pictureImageView.image = image
             self.pictureLabel.text = photo.author
         } else {
             self.pictureImageView.sd_setImage(with: URL(string: photoStringURL)) { [weak self] (image, _, _, _) in
-                #if DEBUG
-                // print("\(photoStringURL) : Network image with SDWebImage")
-                #endif
+                // Logger.viewCycle.debug("\(photoStringURL) : Network image with SDWebImage")
+
                 self?.pictureLabel.text = photo.author
                 self?.animateSubviews()
 
@@ -86,45 +96,37 @@ class CustomCollectionViewCell: UICollectionViewCell {
     // MARK: Configure
 
     private func configureCell() {
-        self.backgroundColor = .tertiarySystemFill
-        self.contentView.alpha = 0
+        self.backgroundColor = .pictureCellBackgroundColor
+        self.contentView.alpha = 0.0
 
-        // MARK: Layout subviews
+        self.layer.borderWidth = .pictureCellBorderWidth
+        self.layer.borderColor = UIColor.pictureCellBorderColor.cgColor
+        self.layer.cornerRadius = .pictureCellCornerRadius
 
-        let indent: CGFloat = 3.0
-        let picScale: CGFloat = 16 / 9
+        addSubviews()
+        setupConstraints()
+    }
 
-        let labelHeight: CGFloat = 26.0
-        let labelWidth: CGFloat = ceil(self.bounds.size.width - indent * 2)
+    private func addSubviews() {
+        contentView.addSubview(pictureLabel)
+        contentView.addSubview(pictureImageView)
+    }
 
-        let estimatedPicWidth: CGFloat = ceil((self.bounds.size.height - labelHeight) * picScale)
-        let picWidth: CGFloat = estimatedPicWidth <= self.bounds.size.width ?
-            estimatedPicWidth : self.bounds.size.width
+    private func setupConstraints() {
+        let indent: CGFloat = .pictureCellIndent
+        let safeArea = contentView.safeAreaLayoutGuide
 
-        let picX: CGFloat = (self.bounds.size.width - estimatedPicWidth) >= 0 ?
-            ceil(self.bounds.size.width / 2 - estimatedPicWidth / 2) : 0.0
+        NSLayoutConstraint.activate([
+            pictureLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: indent * 2),
+            pictureLabel.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: indent),
+            pictureLabel.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -indent),
+            pictureLabel.heightAnchor.constraint(equalToConstant: .pictureCellLabelHeight),
 
-        let pictureLabelFrame = CGRect(x: indent,
-                                       y: indent,
-                                       width: labelWidth,
-                                       height: labelHeight)
-        let pictureImageViewFrame = CGRect(x: picX,
-                                           y: ceil(indent + labelHeight),
-                                           width: picWidth,
-                                           height: ceil(self.bounds.size.height - labelHeight))
-
-        // MARK: Configure subviws
-
-        pictureLabel = UILabel(frame: pictureLabelFrame)
-        pictureLabel.font = .systemFont(ofSize: 15)
-        pictureLabel.textColor = .purple
-        pictureLabel.textAlignment = NSTextAlignment.center
-
-        pictureImageView = UIImageView(frame: pictureImageViewFrame)
-        pictureImageView.contentMode = .scaleAspectFit
-
-        self.contentView.addSubview(pictureLabel)
-        self.contentView.addSubview(pictureImageView)
+            pictureImageView.topAnchor.constraint(equalTo: pictureLabel.bottomAnchor, constant: indent * 2),
+            pictureImageView.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: indent),
+            pictureImageView.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -indent),
+            pictureImageView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -indent)
+        ])
     }
 
     // MARK: - Animation methods
@@ -135,7 +137,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
                           options: [.transitionCrossDissolve, .curveEaseInOut],
                           animations: {
                             self.backgroundColor = .brown
-                            self.contentView.alpha = 1
+                            self.contentView.alpha = 1.0
                           },
                           completion: nil)
     }

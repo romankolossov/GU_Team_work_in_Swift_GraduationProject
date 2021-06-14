@@ -9,14 +9,13 @@ import UIKit
 
 class PhotoLayout: UICollectionViewLayout {
 
-    // MARK: - Public properties
+    // MARK: - Private properties
 
-    let cellHeight: CGFloat = 168
+    private let cellHeight: CGFloat = .pictureCellHeight
+    private let columnsCount: Int = .numberOfColumns
 
-    let columnsCount = 1
-    var totalCellHeight: CGFloat = 0
-
-    var cachedAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
+    private var totalCellHeight: CGFloat = 0.0
+    private var cachedAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
 
     // MARK: - Public methods
 

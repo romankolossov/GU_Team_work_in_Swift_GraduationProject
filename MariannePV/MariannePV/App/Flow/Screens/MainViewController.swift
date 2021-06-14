@@ -8,12 +8,12 @@
 import UIKit
 import RealmSwift
 
-class MainViewController: BaseViewController {
+class MainViewController: UIViewController, AlertShowable {
 
     // MARK: - Public properties
 
-    var publicCellIdentifier: String {
-        cellIdentifier
+    var publicPictureCellIdentifier: String {
+        pictureCellIdentifier
     }
     var publicCollectionViewPhotoService: CollectionViewPhotoService? {
         collectionViewPhotoService
@@ -29,37 +29,38 @@ class MainViewController: BaseViewController {
 
     // MARK: - Private properties
 
-    private let cellIdentifier: String = "CellIdentifier"
+    private let pictureCellIdentifier: String = "PictureCellIdentifier"
     private var collectionViewPhotoService: CollectionViewPhotoService?
     private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
-    private var collectionView: UICollectionView?
+    private var pictureCollectionView: UICollectionView?
     private var refreshControl: UIRefreshControl?
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
-
-        configureMainVC()
         configureCollectionView()
-
         setupRefreshControl()
-        collectionViewPhotoService = CollectionViewPhotoService(container: collectionView)
+        collectionViewPhotoService = CollectionViewPhotoService(container: pictureCollectionView)
 
         if let photos = photos, photos.isEmpty {
             loadData()
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureMainVC()
+    }
+
     // MARK: - Actions
 
     @objc private func refresh(_ sender: UIRefreshControl) {
-        NetworkManager.shared.nextFromPage = 2
         self.loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
+        NetworkManager.shared.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
     }
 
     // MARK: - Public methods
@@ -75,12 +76,15 @@ class MainViewController: BaseViewController {
                     let nextPhotos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
                         try? self?.realmManager?.add(objects: nextPhotos)
-                        self?.collectionView?.reloadData()
+                        self?.pictureCollectionView?.reloadData()
                         self?.isLoading = false
                         completion?()
                     }
                 case let .failure(error):
-                    self?.showAlert(title: self?.localize("error"), message: error.localizedDescription)
+                    self?.showAlert(
+                        title: NSLocalizedString("error", comment: ""),
+                        message: error.localizedDescription
+                    )
                 }
             }
         }
@@ -91,28 +95,35 @@ class MainViewController: BaseViewController {
     // MARK: Configure
 
     private func configureMainVC() {
-        self.title = localize("mainVCName")
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.navigationBarLargeTitleTextColor
+        ]
+        title = NSLocalizedString("mainVCName", comment: "Main view controller name")
 
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.navigationBarTitleTextColor
+        ]
+        (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
     }
 
     private func configureCollectionView() {
         // Custom layout
         let layout = PhotoLayout()
 
-        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        collectionView?.backgroundColor = .lightGray
+        pictureCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        pictureCollectionView?.backgroundColor = .pictureCollectionViewBackgroundColor
 
-        collectionView?.dataSource = self
-        collectionView?.delegate = self
-        collectionView?.prefetchDataSource = self
+        pictureCollectionView?.dataSource = self
+        pictureCollectionView?.delegate = self
+        pictureCollectionView?.prefetchDataSource = self
 
-        collectionView?.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: publicCellIdentifier)
+        pictureCollectionView?.register(PictureCollectionViewCell.self, forCellWithReuseIdentifier: publicPictureCellIdentifier)
 
-        guard let collectionSubview = collectionView else {
+        guard let collectionSubview = pictureCollectionView else {
             return
         }
-        self.view.addSubview(collectionSubview)
+        view.addSubview(collectionSubview)
     }
 
     // MARK: Network methods
@@ -127,12 +138,15 @@ class MainViewController: BaseViewController {
                     DispatchQueue.main.async { [weak self] in
                         try? self?.realmManager?.deleteAll()
                         try? self?.realmManager?.add(objects: photos)
-                        self?.collectionView?.reloadData()
+                        self?.pictureCollectionView?.reloadData()
                         self?.isLoading = false
                         completion?()
                     }
                 case let .failure(error):
-                    self?.showAlert(title: self?.localize("error"), message: error.localizedDescription)
+                    self?.showAlert(
+                        title: NSLocalizedString("error", comment: ""),
+                        message: error.localizedDescription
+                    )
                 }
             }
         }
@@ -143,11 +157,11 @@ class MainViewController: BaseViewController {
     private func setupRefreshControl() {
         refreshControl = UIRefreshControl()
 
-        refreshControl?.attributedTitle = NSAttributedString(string: localize("reloadData"), attributes: [.font: UIFont.systemFont(ofSize: 12)])
+        refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("reloadData", comment: ""), attributes: [.font: UIFont.refreshControlFont])
         refreshControl?.tintColor = .systemOrange
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 
-        collectionView?.refreshControl = refreshControl
+        pictureCollectionView?.refreshControl = refreshControl
     }
 
 }
