@@ -4,22 +4,23 @@
 //
 //  Created by Roman Kolosov on 05.06.2021.
 //
+// CollectionViewPhotoService is to manage loading an image from the Network by its URL
+// or from RAM/SSD cache if it is present there, also to store an image in RAM/SSD cache if it is not there
 
 import UIKit
 import OSLog
 
 class CollectionViewPhotoService {
 
+    // MARK: TO DELETE
+/*
     // MARK: - Nested types
-
+    
     // Error handling
     enum DecoderError: Error {
         case failureInJSONdecoding
     }
-
-    // MARK: - Public properties
-
-    var images = [String: UIImage]()
+*/
 
     // MARK: - Private properties
 
@@ -36,7 +37,10 @@ class CollectionViewPhotoService {
         }
         return pathName
     }()
+    private var images = [String: UIImage]()
 
+    // MARK: TO DELETE
+/*
     // URLSession
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
@@ -45,6 +49,7 @@ class CollectionViewPhotoService {
 
         return session
     }()
+*/
 
     private let cacheLifeTime: TimeInterval = 1 * 60 * 60
     private let container: UICollectionView?
@@ -76,6 +81,8 @@ class CollectionViewPhotoService {
 
     // MARK: - Private methods
 
+// MARK: TO DELETE
+/*
     private func networkRequest(completion: ((Result<[PhotoElementData], Error>) -> Void)? = nil) {
         // Lorem Picsum URL used
         // https://picsum.photos/v2/list?page=2&limit=100
@@ -116,10 +123,27 @@ class CollectionViewPhotoService {
         }
         dataTask.resume()
     }
+*/
 
     // MARK: Load from Network method
 
     private func loadPhoto(atIndexPath indexPath: IndexPath, byUrl url: String) {
+        guard let photoURL = URL(string: url) else { return }
+        guard let data = try? Data(contentsOf: photoURL) else { return }
+        guard let image = UIImage(data: data) else { return }
+
+        DispatchQueue.main.async { [weak self] in
+            self?.images[url] = image
+        }
+        saveImageToCache(url: url, image: image)
+
+        DispatchQueue.main.async { [weak self] in
+            self?.container?.reloadItems(at: [indexPath])
+            // MARK: TO DO: isLoading = false
+        }
+
+        // MARK: TO DELETE
+/*
         DispatchQueue.global().async { [weak self] in
             self?.networkRequest { [weak self] result in
 
@@ -148,6 +172,7 @@ class CollectionViewPhotoService {
                 }
             }
         }
+*/
     }
 
     // MARK: Cache in file methods

@@ -29,7 +29,8 @@ class PictureCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    private var cachedImages: Dictionary = [String: UIImage]()
+    // MARK: - TO DELETE
+//    private var cachedImages: Dictionary = [String: UIImage]()
 
     // MARK: - Initializers
 
@@ -46,9 +47,12 @@ class PictureCollectionViewCell: UICollectionViewCell {
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
 
         guard let photoStringURL = photo.downloadURL else { return }
+
+        // MARK: - TO DELETE
+/*
         // SDWebImage use for activity indicator
         self.pictureImageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
-
+       
         /* SDWebImage use for image download*/
         /* SDWebImage used since it is the most easy way to download images
          avoiding its mismatch in cells. Also it shows the download activity */
@@ -73,6 +77,7 @@ class PictureCollectionViewCell: UICollectionViewCell {
             }
         }
         /* SDWebImage use for image download end */
+*/
 
         /* Way of use RAM and file image caches with network download providing CollectionViewPhotoService.
          It is slower than the use SDWebImage for network.
@@ -84,9 +89,9 @@ class PictureCollectionViewCell: UICollectionViewCell {
          3. remove comments from the use of photoService, "self.pictureLabel.tex=" and "self.animateSubviews()" for the lines bellow;
          4. perform actions following instructions in SecondViewController.swift file.
          */
-        // self.pictureImageView.image = photoService?.getPhoto(atIndexPath: indexPath, byUrl: photoStringURL)
-        // self.pictureLabel.text = photo.author
-        // self.animateSubviews()
+        pictureImageView.image = photoService?.getPhoto(atIndexPath: indexPath, byUrl: photoStringURL)
+        pictureLabel.text = photo.author
+        animateSubviews()
 
         animate()
     }

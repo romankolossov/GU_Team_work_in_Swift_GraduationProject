@@ -59,10 +59,11 @@ class SecondViewController: UIViewController {
         guard let photoStringURL = photo.downloadURL else { return }
         pictureLabel.text = "\(NSLocalizedString("author", comment: "")) \(photo.author ?? "")"
 
+        // MARK: - TO DELETE
         /* SDWebImage use for image download */
-        pictureImageView.sd_setImage(with: URL(string: photoStringURL)) { [weak self] (_, _, _, _) in
-            self?.animateSubviews()
-        }
+//        pictureImageView.sd_setImage(with: URL(string: photoStringURL)) { [weak self] (_, _, _, _) in
+//            self?.animateSubviews()
+//        }
         /* SDWebImage for image download use end */
 
         /* Way of use RAM, file image caches and network download with CollectionViewPhotoService.
@@ -72,7 +73,7 @@ class SecondViewController: UIViewController {
          2. remove comments from the use of photoService for the line bellow;
          3. perform actions following instructions in PictureCollectionViewCell.swift file.
          */
-        // self.pictureImageView.image = photoService?.getPhoto(atIndexPath: indexPath, byUrl: photoStringURL)
+        self.pictureImageView.image = photoService?.getPhoto(atIndexPath: indexPath, byUrl: photoStringURL)
     }
 
     // MARK: - Private methods
