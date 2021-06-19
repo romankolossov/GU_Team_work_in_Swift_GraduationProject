@@ -68,6 +68,7 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: Network methods
 
     func loadPartData(from page: Int, completion: (() -> Void)? = nil) {
+        isLoading = true
         DispatchQueue.global().async { [weak self] in
             self?.networkManager.loadPartPhotos(from: page) { [weak self] result in
 
@@ -81,6 +82,7 @@ class MainViewController: UIViewController, AlertShowable {
                         completion?()
                     }
                 case let .failure(error):
+                    self?.isLoading = false
                     self?.showAlert(
                         title: NSLocalizedString("error", comment: ""),
                         message: error.localizedDescription
@@ -129,6 +131,7 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: Network methods
 
     private func loadData(completion: (() -> Void)? = nil) {
+        isLoading = true
         DispatchQueue.global().async { [weak self] in
             self?.networkManager.loadPhotos { [weak self] result in
 
@@ -143,6 +146,7 @@ class MainViewController: UIViewController, AlertShowable {
                         completion?()
                     }
                 case let .failure(error):
+                    self?.isLoading = false
                     self?.showAlert(
                         title: NSLocalizedString("error", comment: ""),
                         message: error.localizedDescription

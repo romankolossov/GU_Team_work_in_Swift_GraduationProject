@@ -5,7 +5,7 @@
 //  Created by Roman Kolosov on 05.06.2021.
 //
 // NetworkManager is to load photos via Lorem Picsum URL then decode photos to get URLs
-// in order to use the URLs to load images with CollectionViewPhotoService after
+// in order to use the URLs to load images itself with CollectionViewPhotoService after on
 
 import Foundation
 import OSLog
