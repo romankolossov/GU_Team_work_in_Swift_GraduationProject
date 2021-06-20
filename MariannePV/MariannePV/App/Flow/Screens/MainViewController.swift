@@ -65,7 +65,7 @@ class MainViewController: UIViewController, AlertShowable {
 
     // MARK: - Public methods
 
-    // MARK: Network methods
+    // MARK: Network method
 
     func loadPartData(from page: Int, completion: (() -> Void)? = nil) {
         isLoading = true
@@ -128,7 +128,7 @@ class MainViewController: UIViewController, AlertShowable {
         view.addSubview(collectionSubview)
     }
 
-    // MARK: Network methods
+    // MARK: Network method
 
     private func loadData(completion: (() -> Void)? = nil) {
         isLoading = true
@@ -167,5 +167,18 @@ class MainViewController: UIViewController, AlertShowable {
 
         pictureCollectionView?.refreshControl = refreshControl
     }
+
+    // MARK: - Animation method
+
+//    private func animate() {
+//        guard let cv = pictureCollectionView else { return }
+//        UIView.transition(with: cv,
+//                          duration: 1.2,
+//                          options: [.transitionCrossDissolve, .curveEaseInOut],
+//                          animations: {
+//                            cv.alpha = 1.0
+//                          },
+//                          completion: nil)
+//    }
 
 }

@@ -29,8 +29,6 @@ class PictureCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    // MARK: - TO DELETE
-//    private var cachedImages: Dictionary = [String: UIImage]()
 
     // MARK: - Initializers
 
@@ -46,8 +44,6 @@ class PictureCollectionViewCell: UICollectionViewCell {
 
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
         guard let photoStringURL = photo.downloadURL else { return }
-
-        animate()
         animateSubviews()
 
         pictureImageView.image = photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL)
@@ -60,9 +56,8 @@ class PictureCollectionViewCell: UICollectionViewCell {
 
     private func configureCell() {
         self.backgroundColor = .pictureCellBackgroundColor
-        self.contentView.alpha = 0.0
-
         self.layer.borderWidth = .pictureCellBorderWidth
+
         self.layer.borderColor = UIColor.pictureCellBorderColor.cgColor
         self.layer.cornerRadius = .pictureCellCornerRadius
 
@@ -93,17 +88,6 @@ class PictureCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Animation methods
-
-    private func animate() {
-        UIView.transition(with: self.contentView,
-                          duration: 1.2,
-                          options: [.transitionCrossDissolve, .curveEaseInOut],
-                          animations: {
-                            self.backgroundColor = .brown
-                            self.contentView.alpha = 1.0
-                          },
-                          completion: nil)
-    }
 
     private func animateSubviews() {
         UIView.transition(with: self.pictureLabel,

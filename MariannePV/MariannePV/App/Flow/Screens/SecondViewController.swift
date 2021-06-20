@@ -56,7 +56,7 @@ class SecondViewController: UIViewController {
 
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
         guard let photoStringURL = photo.downloadURL else { return }
-        
+
         pictureLabel.text = "\(NSLocalizedString("author", comment: "")) \(photo.author ?? "")"
         pictureImageView.image = photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL)
     }
