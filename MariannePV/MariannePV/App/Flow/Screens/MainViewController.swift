@@ -168,17 +168,4 @@ class MainViewController: UIViewController, AlertShowable {
         pictureCollectionView?.refreshControl = refreshControl
     }
 
-    // MARK: - Animation method
-
-//    private func animate() {
-//        guard let cv = pictureCollectionView else { return }
-//        UIView.transition(with: cv,
-//                          duration: 1.2,
-//                          options: [.transitionCrossDissolve, .curveEaseInOut],
-//                          animations: {
-//                            cv.alpha = 1.0
-//                          },
-//                          completion: nil)
-//    }
-
 }

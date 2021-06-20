@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SDWebImage
 import OSLog
 
 class PictureCollectionViewCell: UICollectionViewCell {
