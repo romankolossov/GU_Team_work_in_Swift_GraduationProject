@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SDWebImage
 import OSLog
 
 class PictureCollectionViewCell: UICollectionViewCell {
@@ -29,7 +28,6 @@ class PictureCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    private var cachedImages: Dictionary = [String: UIImage]()
 
     // MARK: - Initializers
 
@@ -44,51 +42,11 @@ class PictureCollectionViewCell: UICollectionViewCell {
     // MARK: - Public methods
 
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
-
         guard let photoStringURL = photo.downloadURL else { return }
-        // SDWebImage use for activity indicator
-        self.pictureImageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
+        animateSubviews()
 
-        /* SDWebImage use for image download*/
-        /* SDWebImage used since it is the most easy way to download images
-         avoiding its mismatch in cells. Also it shows the download activity */
-
-        // RAM cache use
-        if let image = cachedImages[photoStringURL] {
-            // Logger.viewCycle.debug("\(photoStringURL) : Cached image with SDWebImage")
-
-            self.pictureImageView.image = image
-            self.pictureLabel.text = photo.author
-        } else {
-            self.pictureImageView.sd_setImage(with: URL(string: photoStringURL)) { [weak self] (image, _, _, _) in
-                // Logger.viewCycle.debug("\(photoStringURL) : Network image with SDWebImage")
-
-                self?.pictureLabel.text = photo.author
-                self?.animateSubviews()
-
-                guard let image = image else { return }
-                DispatchQueue.main.async { [weak self] in
-                    self?.cachedImages[photoStringURL] = image
-                }
-            }
-        }
-        /* SDWebImage use for image download end */
-
-        /* Way of use RAM and file image caches with network download providing CollectionViewPhotoService.
-         It is slower than the use SDWebImage for network.
-         Also it causes mismatch images when cache fomm file used.
-         Stack - CollectionViewPhotoService.
-         In order to use CollectionViewPhotoService, plese
-         1. comment the code between "SDWebImage use for image download - SDWebImage use end";
-         2. comment the line: "private var cachedImages: Dictionary = [String : UIImage]()"
-         3. remove comments from the use of photoService, "self.pictureLabel.tex=" and "self.animateSubviews()" for the lines bellow;
-         4. perform actions following instructions in SecondViewController.swift file.
-         */
-        // self.pictureImageView.image = photoService?.getPhoto(atIndexPath: indexPath, byUrl: photoStringURL)
-        // self.pictureLabel.text = photo.author
-        // self.animateSubviews()
-
-        animate()
+        pictureImageView.image = photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL)
+        pictureLabel.text = photo.author
     }
 
     // MARK: - Private methods
@@ -97,9 +55,8 @@ class PictureCollectionViewCell: UICollectionViewCell {
 
     private func configureCell() {
         self.backgroundColor = .pictureCellBackgroundColor
-        self.contentView.alpha = 0.0
-
         self.layer.borderWidth = .pictureCellBorderWidth
+
         self.layer.borderColor = UIColor.pictureCellBorderColor.cgColor
         self.layer.cornerRadius = .pictureCellCornerRadius
 
@@ -131,17 +88,6 @@ class PictureCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Animation methods
 
-    private func animate() {
-        UIView.transition(with: self.contentView,
-                          duration: 1.2,
-                          options: [.transitionCrossDissolve, .curveEaseInOut],
-                          animations: {
-                            self.backgroundColor = .brown
-                            self.contentView.alpha = 1.0
-                          },
-                          completion: nil)
-    }
-
     private func animateSubviews() {
         UIView.transition(with: self.pictureLabel,
                           duration: 1.2,
@@ -151,7 +97,7 @@ class PictureCollectionViewCell: UICollectionViewCell {
                           completion: nil)
 
         UIView.transition(with: self.pictureImageView,
-                          duration: 1.2,
+                          duration: 1.7,
                           options: [.transitionCrossDissolve, .curveEaseInOut],
                           animations: {
                           },

@@ -17,7 +17,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let photos = self.photos else { fatalError(description) }
-
         return photos.count
     }
 
@@ -59,8 +58,8 @@ extension MainViewController: UICollectionViewDataSourcePrefetching {
         guard let photos = self.photos else { return }
         guard let maxIndex = indexPaths.map({ $0.row }).max() else { return }
 
-        if (maxIndex > photos.count - Int.decrementToDefineStartLoading), !isLoading {
-            self.isLoading = true
+        if (maxIndex > photos.count - Int.decrementToDefineStartLoading),
+           !isLoading {
             self.loadPartData(from: NetworkManager.shared.nextFromPage)
         }
     }

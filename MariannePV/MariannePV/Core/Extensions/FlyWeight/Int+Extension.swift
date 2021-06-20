@@ -21,6 +21,6 @@ extension Int {
 
     // MARK: - UICollectionViewDataSourcePrefetching
 
-    static let decrementToDefineStartLoading: Int = 3
+    static let decrementToDefineStartLoading: Int = 6
 
 }

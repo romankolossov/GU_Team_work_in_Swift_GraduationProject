@@ -4,26 +4,17 @@
 //
 //  Created by Roman Kolosov on 05.06.2021.
 //
+// CollectionViewPhotoService is to manage loading an image from the Network by its URL
+// or from RAM/SSD cache if it is present there, also to store an image in RAM/SSD cache if it is not there
 
 import UIKit
 import OSLog
 
 class CollectionViewPhotoService {
 
-    // MARK: - Nested types
-
-    // Error handling
-    enum DecoderError: Error {
-        case failureInJSONdecoding
-    }
-
-    // MARK: - Public properties
-
-    var images = [String: UIImage]()
-
     // MARK: - Private properties
 
-    // Create cache files dirrectory
+    // Image SSD cache files dirrectory to create with pathName
     private static let pathName: String = {
         let pathName = "images"
         guard let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
@@ -36,17 +27,12 @@ class CollectionViewPhotoService {
         }
         return pathName
     }()
+    // Image RAM cache dictionary
+    private var images = [String: UIImage]()
 
-    // URLSession
-    private lazy var session: URLSession = {
-        let configuration = URLSessionConfiguration.default
-        // configuration.allowsCellularAccess = false
-        let session = URLSession(configuration: configuration)
-
-        return session
-    }()
-
+    // Image SSD cache files life time (in sec.)
     private let cacheLifeTime: TimeInterval = 1 * 60 * 60
+    // Container to refresh
     private let container: UICollectionView?
 
     // MARK: - Initializers
@@ -57,100 +43,49 @@ class CollectionViewPhotoService {
 
     // MARK: - Public methods
 
-    func getPhoto(atIndexPath indexPath: IndexPath, byUrl url: String) -> UIImage? {
+    func getImage(atIndexPath indexPath: IndexPath, byUrl url: String) -> UIImage? {
         var image: UIImage?
 
-        if let photo = images[url] {
-            Logger.viewCycle.debug("\(url) : RAM cache use with PhotoService")
-            image = photo
-        } else if let photo = getImageFromCache(url: url) {
-            Logger.viewCycle.debug("\(url) : SDD cache file used with PhotoService")
-            image = photo
+        if let uncachedImage = images[url] {
+            Logger.viewCycle.debug("\(url) : RAM cache used")
+            image = uncachedImage
+        } else if let uncachedImage = getImageFromFileCache(url: url) {
+            Logger.viewCycle.debug("\(url) : SDD cache file used")
+            image = uncachedImage
         } else {
-            Logger.viewCycle.debug("\(url) : Network download with PhotoService")
-            // MARK: TO DO: isLoading = true
-            loadPhoto(atIndexPath: indexPath, byUrl: url)
+            Logger.viewCycle.debug("\(url) : Network load")
+            // Place placeholder image while the image is loading from the Network
+            image = UIImage(named: "loadingBarSmile")
+            // Load the image by its url from the Network and save it to cache
+            loadImage(atIndexPath: indexPath, byUrl: url)
         }
         return image
     }
 
     // MARK: - Private methods
 
-    private func networkRequest(completion: ((Result<[PhotoElementData], Error>) -> Void)? = nil) {
-        // Lorem Picsum URL used
-        // https://picsum.photos/v2/list?page=2&limit=100
+    // MARK: Image from Network load method
 
-        // URL constructor
-        var urlConstructor = URLComponents()
+    private func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
+        guard let photoURL = URL(string: url) else { return }
+        guard let data = try? Data(contentsOf: photoURL) else { return }
 
-        urlConstructor.scheme = "https"
-        urlConstructor.host = "picsum.photos"
-        urlConstructor.path = "/v2/list"
-
-        urlConstructor.queryItems = [
-            URLQueryItem(name: "page", value: "1"),
-            URLQueryItem(name: "limit", value: "30")
-        ]
-        guard let url = urlConstructor.url else { return }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        // request.allowsCellularAccess = false
-
-        // Data task
-        let dataTask = session.dataTask(with: request) { (data, _, error) in
-            if let data = data {
-                do {
-                    let photoElements = try JSONDecoder().decode(PhotoQuery.self, from: data)
-                    let photos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
-                    completion?(.success(photos))
-                } catch {
-                    completion?(.failure(DecoderError.failureInJSONdecoding))
-                }
-            } else if let error = error {
-                Logger.viewCycle.debug(
-                    "error in session.dataTask of CollectionViewPhotoService in:\n\(#function)"
-                )
-                completion?(.failure(error))
+        // MARK: TO DO: isLoading = true
+        DispatchQueue.global().async {
+            guard let image = UIImage(data: data) else {
+                // MARK: TO DO: isLoading = false
+                return
             }
-        }
-        dataTask.resume()
-    }
-
-    // MARK: Load from Network method
-
-    private func loadPhoto(atIndexPath indexPath: IndexPath, byUrl url: String) {
-        DispatchQueue.global().async { [weak self] in
-            self?.networkRequest { [weak self] result in
-
-                switch result {
-                case let .success(photoElementsData):
-                    let photoElementData = photoElementsData[indexPath.row]
-
-                    guard let photoStringURL = photoElementData.downloadURL else { return }
-                    guard let photoURL = URL(string: photoStringURL) else { return }
-                    guard let data = try? Data(contentsOf: photoURL) else { return }
-                    guard let image = UIImage(data: data) else { return }
-
-                    DispatchQueue.main.async { [weak self] in
-                        self?.images[photoStringURL] = image
-                    }
-                    self?.saveImageToCache(url: photoStringURL, image: image)
-
-                    DispatchQueue.main.async { [weak self] in
-                        self?.container?.reloadItems(at: [indexPath])
-                        // MARK: TO DO: isLoading = false
-                    }
-                case let .failure(error):
-                    Logger.viewCycle.debug(
-                        "error in networkRequest of CollectionViewPhotoService in:\n\(#function)\n\(error.localizedDescription)"
-                    )
-                }
+            DispatchQueue.main.async { [weak self] in
+                self?.images[url] = image
+                self?.container?.reloadItems(at: [indexPath])
+                // MARK: TO DO: isLoading = false
             }
+            self.saveImageToFileCache(url: url, image: image)
         }
     }
 
-    // MARK: Cache in file methods
+    // MARK: Image SSD file cache methods
 
     // Get an image cache file path basing on its url
     private func getFilePath(url: String) -> String? {
@@ -161,14 +96,15 @@ class CollectionViewPhotoService {
         return cashesDirectory.appendingPathComponent(CollectionViewPhotoService.pathName + "/" + hashName).path
     }
 
-    private func saveImageToCache(url: String, image: UIImage) {
-        guard let fileLocalyPath = getFilePath(url: url), let data = image.pngData()
+    private func saveImageToFileCache(url: String, image: UIImage) {
+        guard let fileLocalyPath = getFilePath(url: url),
+              let data = image.pngData()
             else { return }
 
         FileManager.default.createFile(atPath: fileLocalyPath, contents: data, attributes: nil)
     }
 
-    private func getImageFromCache(url: String) -> UIImage? {
+    private func getImageFromFileCache(url: String) -> UIImage? {
         guard let fileLocalyPath = getFilePath(url: url),
             let info = try? FileManager.default.attributesOfItem(atPath: fileLocalyPath),
             let modificationDate = info[FileAttributeKey.modificationDate] as? Date

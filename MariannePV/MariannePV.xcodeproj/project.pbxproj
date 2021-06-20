@@ -10,7 +10,6 @@
 		C841B3212675D7FE00255544 /* AlertShowable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C841B3202675D7FE00255544 /* AlertShowable+Extension.swift */; };
 		C841B3232675EBB300255544 /* Logger+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C841B3222675EBB300255544 /* Logger+Extension.swift */; };
 		C85B9F8B266B5F8400816C97 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C85B9F8A266B5F8400816C97 /* RealmSwift */; };
-		C85B9F8E266B65C800816C97 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C85B9F8D266B65C800816C97 /* SDWebImage */; };
 		C85B9F90266B6BF400816C97 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F8F266B6BF400816C97 /* NetworkManager.swift */; };
 		C85B9F92266B6C0E00816C97 /* CollectionViewPhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F91266B6C0E00816C97 /* CollectionViewPhotoService.swift */; };
 		C85B9F94266B6C2300816C97 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F93266B6C2300816C97 /* RealmManager.swift */; };
@@ -98,7 +97,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C85B9F8E266B65C800816C97 /* SDWebImage in Frameworks */,
 				C85B9F8B266B5F8400816C97 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,7 +359,6 @@
 			name = MariannePV;
 			packageProductDependencies = (
 				C85B9F8A266B5F8400816C97 /* RealmSwift */,
-				C85B9F8D266B65C800816C97 /* SDWebImage */,
 			);
 			productName = MariannePV;
 			productReference = C89809D52665874E009B26D3 /* MariannePV.app */;
@@ -437,7 +434,6 @@
 			mainGroup = C89809CC2665874D009B26D3;
 			packageReferences = (
 				C85B9F89266B5F8400816C97 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
-				C85B9F8C266B65C800816C97 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = C89809D62665874E009B26D3 /* Products */;
 			projectDirPath = "";
@@ -880,14 +876,6 @@
 				minimumVersion = 10.7.6;
 			};
 		};
-		C85B9F8C266B65C800816C97 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.11.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -895,11 +883,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C85B9F89266B5F8400816C97 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
-		};
-		C85B9F8D266B65C800816C97 /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C85B9F8C266B65C800816C97 /* XCRemoteSwiftPackageReference "SDWebImage" */;
-			productName = SDWebImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 
