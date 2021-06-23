@@ -67,15 +67,16 @@ class CollectionViewPhotoService {
     // MARK: Image from Network load method
 
     private func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
-        guard let photoURL = URL(string: url) else { return }
-        guard let data = try? Data(contentsOf: photoURL) else { return }
+        guard let imageURL = URL(string: url) else { return }
 
         // MARK: TO DO: isLoading = true
         DispatchQueue.global().async {
-            guard let image = UIImage(data: data) else {
+            guard let data = try? Data(contentsOf: imageURL) else {
                 // MARK: TO DO: isLoading = false
                 return
             }
+            guard let image = UIImage(data: data) else { return }
+
             DispatchQueue.main.async { [weak self] in
                 self?.images[url] = image
                 self?.container?.reloadItems(at: [indexPath])

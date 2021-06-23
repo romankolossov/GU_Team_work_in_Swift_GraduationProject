@@ -71,8 +71,8 @@ class MainViewController: UIViewController, AlertShowable {
         isLoading = true
         DispatchQueue.global().async { [weak self] in
             self?.networkManager.loadPartPhotos(from: page) { [weak self] result in
-
                 switch result {
+
                 case let .success(photoElements):
                     let nextPhotos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
@@ -134,8 +134,8 @@ class MainViewController: UIViewController, AlertShowable {
         isLoading = true
         DispatchQueue.global().async { [weak self] in
             self?.networkManager.loadPhotos { [weak self] result in
-
                 switch result {
+
                 case let .success(photoElements):
                     let photos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
@@ -161,7 +161,9 @@ class MainViewController: UIViewController, AlertShowable {
     private func setupRefreshControl() {
         refreshControl = UIRefreshControl()
 
-        refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("reloadData", comment: ""), attributes: [.font: UIFont.refreshControlFont])
+        refreshControl?.attributedTitle = NSAttributedString(
+            string: NSLocalizedString("reloadData", comment: ""), attributes: [.font: UIFont.refreshControlFont]
+        )
         refreshControl?.tintColor = .systemOrange
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 
