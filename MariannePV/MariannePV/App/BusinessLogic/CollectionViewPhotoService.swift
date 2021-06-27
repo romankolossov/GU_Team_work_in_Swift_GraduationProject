@@ -33,11 +33,11 @@ class CollectionViewPhotoService {
     // Image SSD cache files life time (in sec.)
     private let cacheLifeTime: TimeInterval = 1 * 60 * 60
     // Container to refresh
-    private let container: UICollectionView?
+    private let container: UICollectionView
 
     // MARK: - Initializers
 
-    init(container: UICollectionView?) {
+    init(container: UICollectionView) {
         self.container = container
     }
 
@@ -79,7 +79,7 @@ class CollectionViewPhotoService {
 
             DispatchQueue.main.async { [weak self] in
                 self?.images[url] = image
-                self?.container?.reloadItems(at: [indexPath])
+                self?.container.reloadItems(at: [indexPath])
                 // MARK: TO DO: isLoading = false
             }
             self.saveImageToFileCache(url: url, image: image)

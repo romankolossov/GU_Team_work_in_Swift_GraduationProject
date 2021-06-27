@@ -29,18 +29,38 @@ class MainViewController: UIViewController, AlertShowable {
 
     // MARK: - Private properties
 
+    private lazy var pictureCollectionView: UICollectionView = {
+        // Custom layout
+        let layout = PhotoLayout()
+        let safeArea = view.safeAreaLayoutGuide
+
+        let cv = UICollectionView(
+            frame: safeArea.layoutFrame,
+            collectionViewLayout: layout
+        )
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .pictureCollectionViewBackgroundColor
+
+        cv.dataSource = self
+        cv.delegate = self
+        cv.prefetchDataSource = self
+
+        cv.register(PictureCollectionViewCell.self, forCellWithReuseIdentifier: publicPictureCellIdentifier)
+
+        return cv
+    }()
+
     private let pictureCellIdentifier: String = "PictureCellIdentifier"
-    private var collectionViewPhotoService: CollectionViewPhotoService?
     private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
-    private var pictureCollectionView: UICollectionView?
+    private var collectionViewPhotoService: CollectionViewPhotoService?
     private var refreshControl: UIRefreshControl?
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureCollectionView()
+        addSubviews()
         setupRefreshControl()
         collectionViewPhotoService = CollectionViewPhotoService(container: pictureCollectionView)
 
@@ -57,7 +77,7 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: - Actions
 
     @objc private func refresh(_ sender: UIRefreshControl) {
-        self.loadData { [weak self] in
+        loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
         NetworkManager.shared.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
@@ -77,7 +97,7 @@ class MainViewController: UIViewController, AlertShowable {
                     let nextPhotos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
                         try? self?.realmManager?.add(objects: nextPhotos)
-                        self?.pictureCollectionView?.reloadData()
+                        self?.pictureCollectionView.reloadData()
                         self?.isLoading = false
                         completion?()
                     }
@@ -109,23 +129,8 @@ class MainViewController: UIViewController, AlertShowable {
         (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
     }
 
-    private func configureCollectionView() {
-        // Custom layout
-        let layout = PhotoLayout()
-
-        pictureCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        pictureCollectionView?.backgroundColor = .pictureCollectionViewBackgroundColor
-
-        pictureCollectionView?.dataSource = self
-        pictureCollectionView?.delegate = self
-        pictureCollectionView?.prefetchDataSource = self
-
-        pictureCollectionView?.register(PictureCollectionViewCell.self, forCellWithReuseIdentifier: publicPictureCellIdentifier)
-
-        guard let collectionSubview = pictureCollectionView else {
-            return
-        }
-        view.addSubview(collectionSubview)
+    private func addSubviews() {
+        view.addSubview(pictureCollectionView)
     }
 
     // MARK: Network method
@@ -141,7 +146,7 @@ class MainViewController: UIViewController, AlertShowable {
                     DispatchQueue.main.async { [weak self] in
                         try? self?.realmManager?.deleteAll()
                         try? self?.realmManager?.add(objects: photos)
-                        self?.pictureCollectionView?.reloadData()
+                        self?.pictureCollectionView.reloadData()
                         self?.isLoading = false
                         completion?()
                     }
@@ -167,7 +172,7 @@ class MainViewController: UIViewController, AlertShowable {
         refreshControl?.tintColor = .systemOrange
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 
-        pictureCollectionView?.refreshControl = refreshControl
+        pictureCollectionView.refreshControl = refreshControl
     }
 
 }
