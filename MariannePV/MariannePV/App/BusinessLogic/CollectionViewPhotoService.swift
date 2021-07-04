@@ -67,22 +67,22 @@ class CollectionViewPhotoService {
     // MARK: Image from Network load method
 
     private func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
-        guard let imageURL = URL(string: url) else { return }
-
-        // MARK: TO DO: isLoading = true
         DispatchQueue.global().async {
+            guard let imageURL = URL(string: url) else { return }
+            // MARK: TO DO: isLoading = true
             guard let data = try? Data(contentsOf: imageURL) else {
                 // MARK: TO DO: isLoading = false
                 return
             }
+            // MARK: TO DO: isLoading = false
             guard let image = UIImage(data: data) else { return }
+
+            self.saveImageToFileCache(url: url, image: image)
 
             DispatchQueue.main.async { [weak self] in
                 self?.images[url] = image
                 self?.container.reloadItems(at: [indexPath])
-                // MARK: TO DO: isLoading = false
             }
-            self.saveImageToFileCache(url: url, image: image)
         }
     }
 
@@ -93,8 +93,16 @@ class CollectionViewPhotoService {
         guard let cashesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
             else { return nil }
 
-        let hashName = url.split(separator: "/").last ?? "default"
-        return cashesDirectory.appendingPathComponent(CollectionViewPhotoService.pathName + "/" + hashName).path
+        // Get photo id as hash name from its url.
+        // Example: https://picsum.photos/id/1/5616/3744 where id value is 1 and it goes 4th in split array.
+        let hashName = url.split(separator: "/")[3]
+
+        guard !hashName.isEmpty else {
+            return cashesDirectory.appendingPathComponent(
+                CollectionViewPhotoService.pathName + "/" + "default").path
+        }
+        return cashesDirectory.appendingPathComponent(
+            CollectionViewPhotoService.pathName + "/" + hashName).path
     }
 
     private func saveImageToFileCache(url: String, image: UIImage) {
