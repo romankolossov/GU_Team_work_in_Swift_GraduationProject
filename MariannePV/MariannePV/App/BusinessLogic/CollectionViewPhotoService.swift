@@ -67,7 +67,14 @@ class CollectionViewPhotoService {
     // MARK: Image from Network load method
 
     private func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
-        DispatchQueue.global().async {
+        let concurentQueue = DispatchQueue(
+            label: "concurentQueueToLoadImage",
+            qos: .default,
+            attributes: .concurrent,
+            autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.inherit,
+            target: nil
+        )
+        concurentQueue.async {
             guard let imageURL = URL(string: url) else { return }
             // MARK: TO DO: isLoading = true
             guard let data = try? Data(contentsOf: imageURL) else {

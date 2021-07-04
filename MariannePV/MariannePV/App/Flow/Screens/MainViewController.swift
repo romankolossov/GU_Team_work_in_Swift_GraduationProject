@@ -88,11 +88,18 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: Network method
 
     func loadPartData(from page: Int, completion: (() -> Void)? = nil) {
+        let concurentQueue = DispatchQueue(
+            label: "concurentQueueToLoadPartData",
+            qos: .default,
+            attributes: .concurrent,
+            autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.inherit,
+            target: nil
+        )
         isLoading = true
-        DispatchQueue.global().async { [weak self] in
+
+        concurentQueue.async { [weak self] in
             self?.networkManager.loadPartPhotos(from: page) { [weak self] result in
                 switch result {
-
                 case let .success(photoElements):
                     let nextPhotos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
@@ -136,11 +143,18 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: Network method
 
     private func loadData(completion: (() -> Void)? = nil) {
+        let concurentQueue = DispatchQueue(
+            label: "concurentQueueToLoadData",
+            qos: .default,
+            attributes: .concurrent,
+            autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.inherit,
+            target: nil
+        )
         isLoading = true
-        DispatchQueue.global().async { [weak self] in
+
+        concurentQueue.async { [weak self] in
             self?.networkManager.loadPhotos { [weak self] result in
                 switch result {
-
                 case let .success(photoElements):
                     let photos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
