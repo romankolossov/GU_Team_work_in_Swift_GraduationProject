@@ -25,7 +25,7 @@ class MainViewController: UIViewController, AlertShowable {
         let photos: Results<PhotoElementData>? = realmManager?.getObjects()
         return photos?.sorted(byKeyPath: "id", ascending: true)
     }
-    var isLoading: Bool = false
+    var isLoading = false
 
     // MARK: - Private properties
 
@@ -158,7 +158,9 @@ class MainViewController: UIViewController, AlertShowable {
                 case let .success(photoElements):
                     let photos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
+                        self?.collectionViewPhotoService?.images.removeAll()
                         try? self?.realmManager?.deleteAll()
+                        self?.pictureCollectionView.reloadData()
                         try? self?.realmManager?.add(objects: photos)
                         self?.pictureCollectionView.reloadData()
                         self?.isLoading = false

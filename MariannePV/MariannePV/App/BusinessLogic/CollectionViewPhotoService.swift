@@ -28,7 +28,7 @@ class CollectionViewPhotoService {
         return pathName
     }()
     // Image RAM cache dictionary
-    private var images = [String: UIImage]()
+    var images = [String: UIImage]()
 
     // Image SSD cache files life time (in sec.)
     private let cacheLifeTime: TimeInterval = 1 * 60 * 60
