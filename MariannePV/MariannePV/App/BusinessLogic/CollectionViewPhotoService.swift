@@ -67,14 +67,9 @@ class CollectionViewPhotoService {
     // MARK: Image from Network load method
 
     private func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
-        let concurentQueue = DispatchQueue(
-            label: "concurentQueueToLoadImage",
-            qos: .default,
-            attributes: .concurrent,
-            autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.inherit,
-            target: nil
-        )
-        concurentQueue.async {
+        let serialQueue = DispatchQueue(label: "serialQueueToLoadAnImage")
+
+        serialQueue.async {
             guard let imageURL = URL(string: url) else { return }
             // MARK: TO DO: isLoading = true
             guard let data = try? Data(contentsOf: imageURL) else {
@@ -82,11 +77,13 @@ class CollectionViewPhotoService {
                 return
             }
             // MARK: TO DO: isLoading = false
-            guard let image = UIImage(data: data) else { return }
-
-            self.saveImageToFileCache(url: url, image: image)
 
             DispatchQueue.main.async { [weak self] in
+                guard let image = UIImage(data: data) else { return }
+                self?.saveImageToFileCache(url: url, image: image)
+                if (self?.images.count ?? 0) > Int.imagesToKeepInRAMCache {
+                    self?.images.removeAll()
+                }
                 self?.images[url] = image
                 self?.container.reloadItems(at: [indexPath])
             }
@@ -133,6 +130,9 @@ class CollectionViewPhotoService {
             else { return nil }
 
         DispatchQueue.main.async { [weak self] in
+            if (self?.images.count ?? 0) > Int.imagesToKeepInRAMCache {
+                self?.images.removeAll()
+            }
             self?.images[url] = image
         }
         return image

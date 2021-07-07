@@ -158,9 +158,11 @@ class MainViewController: UIViewController, AlertShowable {
                 case let .success(photoElements):
                     let photos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
+                        // Clear dictionary and Realm and reload collection view.
                         self?.collectionViewPhotoService?.images.removeAll()
                         try? self?.realmManager?.deleteAll()
                         self?.pictureCollectionView.reloadData()
+                        // Add new data in Realm.
                         try? self?.realmManager?.add(objects: photos)
                         self?.pictureCollectionView.reloadData()
                         self?.isLoading = false
