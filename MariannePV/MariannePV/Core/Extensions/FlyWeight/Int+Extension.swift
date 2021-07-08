@@ -25,6 +25,6 @@ extension Int {
 
     // MARK: - CollectionViewPhotoService
 
-    static let imagesToKeepInRAMCache: Int = 21
+    static let imageAmountToKeepInRAMCache: Int = 15
 
 }

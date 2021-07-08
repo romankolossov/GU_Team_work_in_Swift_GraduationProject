@@ -77,16 +77,19 @@ class CollectionViewPhotoService {
                 return
             }
             // MARK: TO DO: isLoading = false
+            guard let image = UIImage(data: data) else { return }
 
             DispatchQueue.main.async { [weak self] in
-                guard let image = UIImage(data: data) else { return }
-                self?.saveImageToFileCache(url: url, image: image)
-                if (self?.images.count ?? 0) > Int.imagesToKeepInRAMCache {
+                guard (self?.images.count ?? 0) <= Int.imageAmountToKeepInRAMCache else {
                     self?.images.removeAll()
+                    self?.images[url] = image
+                    self?.container.reloadItems(at: [indexPath])
+                    return
                 }
                 self?.images[url] = image
                 self?.container.reloadItems(at: [indexPath])
             }
+            self.saveImageToFileCache(url: url, image: image)
         }
     }
 
@@ -118,23 +121,24 @@ class CollectionViewPhotoService {
     }
 
     private func getImageFromFileCache(url: String) -> UIImage? {
-        guard let fileLocalyPath = getFilePath(url: url),
-            let info = try? FileManager.default.attributesOfItem(atPath: fileLocalyPath),
-            let modificationDate = info[FileAttributeKey.modificationDate] as? Date
-            else { return nil }
+        guard let fileLocalPath = getFilePath(url: url),
+              let info = try? FileManager.default.attributesOfItem(atPath: fileLocalPath),
+              let modificationDate = info[FileAttributeKey.modificationDate] as? Date
+        else { return nil }
 
         let lifeTime = Date().timeIntervalSince(modificationDate)
 
         guard lifeTime <= cacheLifeTime,
-            let image = UIImage(contentsOfFile: fileLocalyPath)
-            else { return nil }
+              let image = UIImage(contentsOfFile: fileLocalPath)
+        else { return nil }
 
-        DispatchQueue.main.async { [weak self] in
-            if (self?.images.count ?? 0) > Int.imagesToKeepInRAMCache {
-                self?.images.removeAll()
-            }
-            self?.images[url] = image
+        guard (self.images.count) <= Int.imageAmountToKeepInRAMCache else {
+            self.images.removeAll()
+            self.images[url] = image
+            return image
         }
+        self.images[url] = image
+
         return image
     }
 
