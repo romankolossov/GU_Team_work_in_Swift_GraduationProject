@@ -92,7 +92,7 @@ class MainViewController: UIViewController, AlertShowable {
             label: "concurentQueueToLoadPartData",
             qos: .default,
             attributes: .concurrent,
-            autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.inherit,
+            autoreleaseFrequency: .inherit,
             target: nil
         )
         isLoading = true
@@ -149,7 +149,7 @@ class MainViewController: UIViewController, AlertShowable {
             label: "concurentQueueToLoadData",
             qos: .default,
             attributes: .concurrent,
-            autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.inherit,
+            autoreleaseFrequency: .inherit,
             target: nil
         )
         isLoading = true

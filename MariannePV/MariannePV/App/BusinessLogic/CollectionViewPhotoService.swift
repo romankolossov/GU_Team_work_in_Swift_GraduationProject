@@ -67,9 +67,14 @@ class CollectionViewPhotoService {
     // MARK: Image from Network load method
 
     private func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
-        let serialQueue = DispatchQueue(label: "serialQueueToLoadAnImage")
-
-        serialQueue.async {
+        let concurentQueue = DispatchQueue(
+            label: "concurentQueueToLoadAnImage",
+            qos: .userInitiated,
+            attributes: .concurrent,
+            autoreleaseFrequency: .inherit,
+            target: nil
+        )
+        concurentQueue.async { [weak self] in
             guard let imageURL = URL(string: url) else { return }
             // MARK: TO DO: isLoading = true
             guard let data = try? Data(contentsOf: imageURL) else {
@@ -89,7 +94,7 @@ class CollectionViewPhotoService {
                 self?.images[url] = image
                 self?.container.reloadItems(at: [indexPath])
             }
-            self.saveImageToFileCache(url: url, image: image)
+            self?.saveImageToFileCache(url: url, image: image)
         }
     }
 
