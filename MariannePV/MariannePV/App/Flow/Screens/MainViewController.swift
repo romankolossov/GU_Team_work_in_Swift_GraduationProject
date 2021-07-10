@@ -189,9 +189,14 @@ class MainViewController: UIViewController, AlertShowable {
         refreshControl = UIRefreshControl()
 
         refreshControl?.attributedTitle = NSAttributedString(
-            string: NSLocalizedString("reloadData", comment: ""), attributes: [.font: UIFont.refreshControlFont]
+            string: NSLocalizedString(
+                "reloadData", comment: ""),
+            attributes: [
+                .font: UIFont.refreshControlFont,
+                .foregroundColor: UIColor.refreshControlForegroundColor
+            ]
         )
-        refreshControl?.tintColor = .systemOrange
+        refreshControl?.tintColor = .refreshControlTintColor
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 
         pictureCollectionView.refreshControl = refreshControl
