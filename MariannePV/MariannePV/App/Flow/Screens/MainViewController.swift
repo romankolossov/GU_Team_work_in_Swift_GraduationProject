@@ -110,10 +110,12 @@ class MainViewController: UIViewController, AlertShowable {
                     }
                 case let .failure(error):
                     self?.isLoading = false
-                    self?.showAlert(
-                        title: NSLocalizedString("error", comment: ""),
-                        message: error.localizedDescription
-                    )
+                    DispatchQueue.main.async { [weak self] in
+                        self?.showAlert(
+                            title: NSLocalizedString("error", comment: ""),
+                            message: error.localizedDescription
+                        )
+                    }
                 }
             }
         }
@@ -170,10 +172,12 @@ class MainViewController: UIViewController, AlertShowable {
                     }
                 case let .failure(error):
                     self?.isLoading = false
-                    self?.showAlert(
-                        title: NSLocalizedString("error", comment: ""),
-                        message: error.localizedDescription
-                    )
+                    DispatchQueue.main.async { [weak self] in
+                        self?.showAlert(
+                            title: NSLocalizedString("error", comment: ""),
+                            message: error.localizedDescription
+                        )
+                    }
                 }
             }
         }

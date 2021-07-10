@@ -90,17 +90,9 @@ class PictureCollectionViewCell: UICollectionViewCell {
 
     private func animateSubviews() {
         UIView.transition(with: self.pictureLabel,
-                          duration: 1.2,
+                          duration: 0.6,
                           options: [.transitionFlipFromRight, .curveEaseInOut],
-                          animations: {
-                          },
-                          completion: nil)
-
-        UIView.transition(with: self.pictureImageView,
-                          duration: 1.7,
-                          options: [.transitionCrossDissolve, .curveEaseInOut],
-                          animations: {
-                          },
+                          animations: nil,
                           completion: nil)
     }
 
