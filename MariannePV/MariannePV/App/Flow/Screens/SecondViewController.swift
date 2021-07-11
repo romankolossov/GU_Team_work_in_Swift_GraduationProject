@@ -103,7 +103,7 @@ class SecondViewController: UIViewController {
 
     private func animateSubviews() {
         UIView.transition(with: self.pictureLabel,
-                          duration: 2.1,
+                          duration: 1.2,
                           options: [.transitionCrossDissolve, .curveEaseInOut],
                           animations: {
                             self.pictureLabel.alpha = 1.0

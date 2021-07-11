@@ -11,10 +11,9 @@ extension UIColor {
 
     // MARK: - Main VC
 
-    static let pictureCollectionViewBackgroundColor: UIColor = .systemGray
-
-    static let navigationBarLargeTitleTextColor: UIColor = pictureBackgroundColor
-    static let navigationBarTitleTextColor: UIColor = navigationBarTintColor
+    static let pictureCollectionViewBackgroundColor: UIColor = .systemTeal
+    static let navigationBarLargeTitleTextColor: UIColor = .systemBlue
+    static let navigationBarTitleTextColor: UIColor = .systemOrange
 
     // MARK: Picture collection view cell
 
@@ -22,11 +21,16 @@ extension UIColor {
     static let pictureCellBorderColor: UIColor = .systemIndigo
     static let pictureCellLabelTextColor: UIColor = .purple
 
+    // MARK: Refresh control
+
+    static let refreshControlTintColor = navigationBarTitleTextColor
+    static let refreshControlForegroundColor = navigationBarLargeTitleTextColor
+
     // MARK: - Second VC
 
-    static let pictureLabelTextColor: UIColor = .blue
-    static let pictureBackgroundColor: UIColor = .systemYellow
-    static let navigationBarTintColor: UIColor = .systemOrange
+    static let pictureLabelTextColor: UIColor = navigationBarLargeTitleTextColor
+    static let pictureBackgroundColor: UIColor = pictureCollectionViewBackgroundColor
+    static let navigationBarTintColor: UIColor = navigationBarTitleTextColor
 
     // MARK: - Alerts
 

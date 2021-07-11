@@ -28,16 +28,16 @@ class CollectionViewPhotoService {
         return pathName
     }()
     // Image RAM cache dictionary
-    private var images = [String: UIImage]()
+    var images = [String: UIImage]()
 
     // Image SSD cache files life time (in sec.)
     private let cacheLifeTime: TimeInterval = 1 * 60 * 60
     // Container to refresh
-    private let container: UICollectionView?
+    private let container: UICollectionView
 
     // MARK: - Initializers
 
-    init(container: UICollectionView?) {
+    init(container: UICollectionView) {
         self.container = container
     }
 
@@ -67,22 +67,34 @@ class CollectionViewPhotoService {
     // MARK: Image from Network load method
 
     private func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
-        guard let imageURL = URL(string: url) else { return }
-
-        // MARK: TO DO: isLoading = true
-        DispatchQueue.global().async {
+        let concurentQueue = DispatchQueue(
+            label: "concurentQueueToLoadAnImage",
+            qos: .userInitiated,
+            attributes: .concurrent,
+            autoreleaseFrequency: .inherit,
+            target: nil
+        )
+        concurentQueue.async { [weak self] in
+            guard let imageURL = URL(string: url) else { return }
+            // MARK: TO DO: isLoading = true
             guard let data = try? Data(contentsOf: imageURL) else {
                 // MARK: TO DO: isLoading = false
                 return
             }
+            // MARK: TO DO: isLoading = false
             guard let image = UIImage(data: data) else { return }
 
             DispatchQueue.main.async { [weak self] in
+                guard (self?.images.count ?? 0) <= Int.imageAmountToKeepInRAMCache else {
+                    self?.images.removeAll()
+                    self?.images[url] = image
+                    self?.container.reloadItems(at: [indexPath])
+                    return
+                }
                 self?.images[url] = image
-                self?.container?.reloadItems(at: [indexPath])
-                // MARK: TO DO: isLoading = false
+                self?.container.reloadItems(at: [indexPath])
             }
-            self.saveImageToFileCache(url: url, image: image)
+            self?.saveImageToFileCache(url: url, image: image)
         }
     }
 
@@ -93,8 +105,16 @@ class CollectionViewPhotoService {
         guard let cashesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
             else { return nil }
 
-        let hashName = url.split(separator: "/").last ?? "default"
-        return cashesDirectory.appendingPathComponent(CollectionViewPhotoService.pathName + "/" + hashName).path
+        // Get photo id as hash name from its url.
+        // Example: https://picsum.photos/id/1/5616/3744 where id value is 1 and it goes 4th in split array.
+        let hashName = url.split(separator: "/")[3]
+
+        guard !hashName.isEmpty else {
+            return cashesDirectory.appendingPathComponent(
+                CollectionViewPhotoService.pathName + "/" + "default").path
+        }
+        return cashesDirectory.appendingPathComponent(
+            CollectionViewPhotoService.pathName + "/" + hashName).path
     }
 
     private func saveImageToFileCache(url: String, image: UIImage) {
@@ -106,20 +126,24 @@ class CollectionViewPhotoService {
     }
 
     private func getImageFromFileCache(url: String) -> UIImage? {
-        guard let fileLocalyPath = getFilePath(url: url),
-            let info = try? FileManager.default.attributesOfItem(atPath: fileLocalyPath),
-            let modificationDate = info[FileAttributeKey.modificationDate] as? Date
-            else { return nil }
+        guard let fileLocalPath = getFilePath(url: url),
+              let info = try? FileManager.default.attributesOfItem(atPath: fileLocalPath),
+              let modificationDate = info[FileAttributeKey.modificationDate] as? Date
+        else { return nil }
 
         let lifeTime = Date().timeIntervalSince(modificationDate)
 
         guard lifeTime <= cacheLifeTime,
-            let image = UIImage(contentsOfFile: fileLocalyPath)
-            else { return nil }
+              let image = UIImage(contentsOfFile: fileLocalPath)
+        else { return nil }
 
-        DispatchQueue.main.async { [weak self] in
-            self?.images[url] = image
+        guard (self.images.count) <= Int.imageAmountToKeepInRAMCache else {
+            self.images.removeAll()
+            self.images[url] = image
+            return image
         }
+        self.images[url] = image
+
         return image
     }
 

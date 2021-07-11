@@ -23,4 +23,8 @@ extension Int {
 
     static let decrementToDefineStartLoading: Int = 6
 
+    // MARK: - CollectionViewPhotoService
+
+    static let imageAmountToKeepInRAMCache: Int = 15
+
 }
