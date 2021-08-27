@@ -29,25 +29,10 @@ class MainViewController: UIViewController, AlertShowable {
 
     // MARK: - Private properties
 
-    private lazy var pictureCollectionView: UICollectionView = {
-        let layout = PhotoLayout() // Custom layout
-        let safeArea = view.safeAreaLayoutGuide
-
-        let cv = UICollectionView(
-            frame: safeArea.layoutFrame,
-            collectionViewLayout: layout
-        )
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = .pictureCollectionViewBackgroundColor
-
-        cv.dataSource = self
-        cv.delegate = self
-        cv.prefetchDataSource = self
-
-        cv.register(PictureCollectionViewCell.self, forCellWithReuseIdentifier: publicPictureCellIdentifier)
-
-        return cv
-    }()
+    private let pictureCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: PhotoLayout()
+    )
     private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
     private var collectionViewPhotoService: CollectionViewPhotoService?
@@ -57,10 +42,11 @@ class MainViewController: UIViewController, AlertShowable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubviews()
+        configureUI()
         setupRefreshControl()
-        collectionViewPhotoService = CollectionViewPhotoService(container: pictureCollectionView)
-
+        collectionViewPhotoService = CollectionViewPhotoService(
+            container: pictureCollectionView
+        )
         if let photos = photos, photos.isEmpty {
             loadData()
         }
@@ -162,6 +148,12 @@ private extension MainViewController {
         static let pictureCellIdentifier = "com.picture.cell"
     }
 
+    func configureUI() {
+        configureCollectionView()
+        view.addSubview(pictureCollectionView)
+        setupConstraints() // To consider a possible implementation: pictureCollectionView.frame = view.bounds
+    }
+
     func configureVC() {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [
@@ -175,8 +167,31 @@ private extension MainViewController {
         (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
     }
 
-    func addSubviews() {
-        view.addSubview(pictureCollectionView)
+    func configureCollectionView() {
+        pictureCollectionView.backgroundColor = .pictureCollectionViewBackgroundColor
+
+        pictureCollectionView.dataSource = self
+        pictureCollectionView.delegate = self
+        pictureCollectionView.prefetchDataSource = self
+
+        pictureCollectionView.register(
+            PictureCollectionViewCell.self,
+            forCellWithReuseIdentifier: Configuration.pictureCellIdentifier
+        )
+    }
+}
+
+// MARK: - Layout
+
+private extension MainViewController {
+
+    func setupConstraints() {
+        pictureCollectionView.translatesAutoresizingMaskIntoConstraints = false
+
+        pictureCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        pictureCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        pictureCollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        pictureCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 }
 
@@ -207,3 +222,26 @@ private extension MainViewController {
         pictureCollectionView.refreshControl = refreshControl
     }
 }
+
+/* // Commented and leaved to consider as a possible alternative implementation.
+ 
+    private lazy var pictureCollectionView: UICollectionView = {
+        let layout = PhotoLayout() // Custom layout
+        let safeArea = view.safeAreaLayoutGuide
+
+        let cv = UICollectionView(
+            frame: safeArea.layoutFrame,
+            collectionViewLayout: layout
+        )
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .pictureCollectionViewBackgroundColor
+
+        cv.dataSource = self
+        cv.delegate = self
+        cv.prefetchDataSource = self
+
+        cv.register(PictureCollectionViewCell.self, forCellWithReuseIdentifier: publicPictureCellIdentifier)
+
+        return cv
+    }()
+*/

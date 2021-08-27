@@ -11,15 +11,14 @@ class SecondViewController: UIViewController {
 
     // MARK: - Private properties
 
-    private var pictureLabel = UILabel()
-    private var pictureImageView = UIImageView()
+    private let pictureLabel = UILabel()
+    private let pictureImageView = UIImageView()
 
     // MARK: - Initializers
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        addSubviews()
-        configureSubviews()
+        configureUI()
         // setupConstraints()
     }
     @available(*, unavailable) required init?(coder: NSCoder) {
@@ -59,6 +58,12 @@ extension SecondViewController {
 
 private extension SecondViewController {
 
+    func configureUI() {
+        configureSubviews()
+        view.addSubview(pictureLabel)
+        view.addSubview(pictureImageView)
+    }
+
     func configureVC() {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = .navigationBarTintColor
@@ -75,11 +80,6 @@ private extension SecondViewController {
         pictureLabel.font = .pictureLabelFont
 
         pictureImageView.contentMode = .scaleAspectFit
-    }
-
-    func addSubviews() {
-        view.addSubview(pictureLabel)
-        view.addSubview(pictureImageView)
     }
 }
 
