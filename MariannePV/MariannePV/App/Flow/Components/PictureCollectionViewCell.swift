@@ -10,24 +10,10 @@ import OSLog
 
 class PictureCollectionViewCell: UICollectionViewCell {
 
-    // MARK: - Private properties
+    // MARK: - Private Properties
 
-    private lazy var pictureLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .pictureCellLabelTextColor
-        label.textAlignment = .center
-        label.font = .pictureCellLabelFont
-        label.clipsToBounds = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    private lazy var pictureImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
+    private let pictureLabel = UILabel()
+    private let pictureImageView = UIImageView()
 
     // MARK: - Initializers
 
@@ -38,8 +24,11 @@ class PictureCollectionViewCell: UICollectionViewCell {
     @available(*, unavailable) required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
 
-    // MARK: - Public methods
+// MARK: - Configuration
+
+extension PictureCollectionViewCell {
 
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
         guard let photoStringURL = photo.downloadURL else { return }
@@ -48,30 +37,44 @@ class PictureCollectionViewCell: UICollectionViewCell {
         pictureImageView.image = photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL)
         pictureLabel.text = photo.author
     }
+}
 
-    // MARK: - Private methods
+private extension PictureCollectionViewCell {
 
-    // MARK: Configure
+    func configureCell() {
+        backgroundColor = .pictureCellBackgroundColor
+        layer.borderWidth = .pictureCellBorderWidth
 
-    private func configureCell() {
-        self.backgroundColor = .pictureCellBackgroundColor
-        self.layer.borderWidth = .pictureCellBorderWidth
+        layer.borderColor = UIColor.pictureCellBorderColor.cgColor
+        layer.cornerRadius = .pictureCellCornerRadius
 
-        self.layer.borderColor = UIColor.pictureCellBorderColor.cgColor
-        self.layer.cornerRadius = .pictureCellCornerRadius
-
-        addSubviews()
+        configureSubviews()
+        contentView.addSubview(pictureLabel)
+        contentView.addSubview(pictureImageView)
         setupConstraints()
     }
 
-    private func addSubviews() {
-        contentView.addSubview(pictureLabel)
-        contentView.addSubview(pictureImageView)
-    }
+    func configureSubviews() {
+        pictureLabel.textColor = .pictureCellLabelTextColor
+        pictureLabel.textAlignment = .center
+        pictureLabel.font = .pictureCellLabelFont
 
-    private func setupConstraints() {
+        pictureImageView.contentMode = .scaleAspectFit
+    }
+}
+
+// MARK: - Layout
+
+private extension PictureCollectionViewCell {
+
+    func setupConstraints() {
         let indent: CGFloat = .pictureCellIndent
         let safeArea = contentView.safeAreaLayoutGuide
+
+        pictureLabel.clipsToBounds = true
+        pictureLabel.translatesAutoresizingMaskIntoConstraints = false
+        pictureImageView.clipsToBounds = true
+        pictureImageView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             pictureLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: indent * 2),
@@ -85,15 +88,17 @@ class PictureCollectionViewCell: UICollectionViewCell {
             pictureImageView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -indent)
         ])
     }
+}
 
-    // MARK: - Animation Implementation
+// MARK: - Animation Implementation
 
-    private func animateSubviews() {
+private extension PictureCollectionViewCell {
+
+    func animateSubviews() {
         UIView.transition(with: self.pictureLabel,
                           duration: 0.6,
                           options: [.transitionFlipFromRight, .curveEaseInOut],
                           animations: nil,
                           completion: nil)
     }
-
 }

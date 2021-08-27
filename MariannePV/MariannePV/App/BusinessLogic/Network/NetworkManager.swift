@@ -15,7 +15,7 @@ class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
 
-    // MARK: - Nested types
+    // MARK: - Nested Types
 
     // Error handling
     enum NetworkError: Error {
@@ -25,11 +25,11 @@ class NetworkManager {
         case failureInJSONdecoding
     }
 
-    // MARK: - Public properties
+    // MARK: - Public Properties
 
     var nextFromPage: Int = .nextPageAfterFirstToStartLoadingFrom
 
-    // MARK: - Private properties
+    // MARK: - Private Properties
 
     // URLSession
     private lazy var session: URLSession = {
@@ -39,11 +39,13 @@ class NetworkManager {
 
         return session
     }()
+}
 
-    // MARK: - Public methods
+// MARK: - Network Load
 
-    // MARK: Network load methods
+extension NetworkManager {
 
+    // Load photos primally.
     func loadPhotos(completion: ((Result<[PhotoElement], NetworkError>) -> Void)? = nil) {
         let page: Int = 1
 
@@ -57,6 +59,7 @@ class NetworkManager {
         }
     }
 
+    // Load photos partly page by page. Used after the prime load done.
     func loadPartPhotos(from page: Int, completion: ((Result<[PhotoElement], NetworkError>) -> Void)? = nil) {
         networkRequest(for: page) {result in
             switch result {
@@ -70,10 +73,13 @@ class NetworkManager {
 
         NetworkManager.shared.nextFromPage = page + 1
     }
+}
 
-    // MARK: - Private methods
+// MARK: - Network Request
 
-    private func networkRequest(for page: Int, completion: ((Result<[Any], Error>) -> Void)? = nil) {
+private extension NetworkManager {
+
+    func networkRequest(for page: Int, completion: ((Result<[Any], Error>) -> Void)? = nil) {
         // Lorem Picsum URL used
         // https://picsum.photos/v2/list?page=2&limit=100
 
@@ -114,5 +120,4 @@ class NetworkManager {
         }
         dataTask.resume()
     }
-
 }

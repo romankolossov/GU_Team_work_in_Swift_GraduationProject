@@ -12,7 +12,7 @@ import OSLog
 
 class CollectionViewPhotoService {
 
-    // MARK: - Private properties
+    // MARK: - Private Properties
 
     // Image SSD cache files dirrectory to create with pathName
     private static let pathName: String = {
@@ -41,7 +41,9 @@ class CollectionViewPhotoService {
         self.container = container
     }
 
-    // MARK: - Public methods
+    // MARK: - Public Methods
+
+    // MARK: Get Image
 
     func getImage(atIndexPath indexPath: IndexPath, byUrl url: String) -> UIImage? {
         var image: UIImage?
@@ -61,12 +63,13 @@ class CollectionViewPhotoService {
         }
         return image
     }
+}
 
-    // MARK: - Private methods
+// MARK: Image from Network Load Implementation
 
-    // MARK: Image from Network load method
+private extension CollectionViewPhotoService {
 
-    private func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
+    func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
         let concurentQueue = DispatchQueue(
             label: "concurentQueueToLoadAnImage",
             qos: .userInitiated,
@@ -97,11 +100,14 @@ class CollectionViewPhotoService {
             self?.saveImageToFileCache(url: url, image: image)
         }
     }
+}
 
-    // MARK: Image SSD file cache methods
+// MARK: Image SSD File Cache Implementation
+
+private extension CollectionViewPhotoService {
 
     // Get an image cache file path basing on its url
-    private func getFilePath(url: String) -> String? {
+    func getFilePath(url: String) -> String? {
         guard let cashesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
             else { return nil }
 
@@ -117,7 +123,7 @@ class CollectionViewPhotoService {
             CollectionViewPhotoService.pathName + "/" + hashName).path
     }
 
-    private func saveImageToFileCache(url: String, image: UIImage) {
+    func saveImageToFileCache(url: String, image: UIImage) {
         guard let fileLocalyPath = getFilePath(url: url),
               let data = image.pngData()
             else { return }
@@ -125,7 +131,7 @@ class CollectionViewPhotoService {
         FileManager.default.createFile(atPath: fileLocalyPath, contents: data, attributes: nil)
     }
 
-    private func getImageFromFileCache(url: String) -> UIImage? {
+    func getImageFromFileCache(url: String) -> UIImage? {
         guard let fileLocalPath = getFilePath(url: url),
               let info = try? FileManager.default.attributesOfItem(atPath: fileLocalPath),
               let modificationDate = info[FileAttributeKey.modificationDate] as? Date
@@ -146,5 +152,4 @@ class CollectionViewPhotoService {
 
         return image
     }
-
 }

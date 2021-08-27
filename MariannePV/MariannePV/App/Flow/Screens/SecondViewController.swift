@@ -9,7 +9,7 @@ import UIKit
 
 class SecondViewController: UIViewController {
 
-    // MARK: - Private properties
+    // MARK: - Private Properties
 
     private let pictureLabel = UILabel()
     private let pictureImageView = UIImageView()
@@ -41,7 +41,6 @@ class SecondViewController: UIViewController {
         super.viewDidAppear(animated)
         animateSubviews()
     }
-
 }
 
 // MARK: - Configuration

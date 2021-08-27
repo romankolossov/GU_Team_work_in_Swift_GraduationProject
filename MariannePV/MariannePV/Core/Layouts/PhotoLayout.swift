@@ -9,17 +9,18 @@ import UIKit
 
 class PhotoLayout: UICollectionViewLayout {
 
-    // MARK: - Private properties
+    // MARK: - Private Properties
 
     private let cellHeight: CGFloat = .pictureCellHeight
     private let columnsCount: Int = .numberOfColumns
 
     private var totalCellHeight: CGFloat = 0.0
     private var cachedAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
+}
 
-    // MARK: - Public methods
+// MARK: - Callback Functions to Override
 
-    // MARK: Callback functions to override
+extension PhotoLayout {
 
     override func prepare() {
         super.prepare()
@@ -82,5 +83,4 @@ class PhotoLayout: UICollectionViewLayout {
     override var collectionViewContentSize: CGSize {
         CGSize(width: self.collectionView?.bounds.size.width ?? 0, height: self.totalCellHeight)
     }
-
 }
