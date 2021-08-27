@@ -47,7 +47,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
         self.navigationController?.pushViewController(secondVC, animated: true)
     }
-
 }
 
 // MARK: - Infinite Scrolling Implementation
@@ -66,5 +65,4 @@ extension MainViewController: UICollectionViewDataSourcePrefetching {
 
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
     }
-
 }

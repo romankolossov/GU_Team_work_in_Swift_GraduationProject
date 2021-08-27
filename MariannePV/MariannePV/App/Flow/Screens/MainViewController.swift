@@ -68,7 +68,7 @@ class MainViewController: UIViewController, AlertShowable {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureMainVC()
+        configureVC()
     }
 
     // MARK: - Public methods
@@ -162,7 +162,7 @@ private extension MainViewController {
         static let pictureCellIdentifier = "com.picture.cell"
     }
 
-    func configureMainVC() {
+    func configureVC() {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.navigationBarLargeTitleTextColor

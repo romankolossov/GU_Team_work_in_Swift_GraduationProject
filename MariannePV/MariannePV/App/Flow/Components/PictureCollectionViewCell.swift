@@ -86,7 +86,7 @@ class PictureCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    // MARK: - Animation methods
+    // MARK: - Animation Implementation
 
     private func animateSubviews() {
         UIView.transition(with: self.pictureLabel,

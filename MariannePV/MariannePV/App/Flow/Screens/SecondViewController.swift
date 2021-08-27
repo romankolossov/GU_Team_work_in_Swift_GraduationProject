@@ -11,29 +11,16 @@ class SecondViewController: UIViewController {
 
     // MARK: - Private properties
 
-    private lazy var pictureLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .pictureLabelTextColor
-        label.textAlignment = .center
-        label.font = .pictureLabelFont
-        label.clipsToBounds = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    private lazy var pictureImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
+    private var pictureLabel = UILabel()
+    private var pictureImageView = UIImageView()
 
     // MARK: - Initializers
 
     init() {
         super.init(nibName: nil, bundle: nil)
         addSubviews()
-        setupConstraints()
+        configureSubviews()
+        // setupConstraints()
     }
     @available(*, unavailable) required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -43,7 +30,12 @@ class SecondViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureSecondVC()
+        configureVC()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setupConstraints()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -51,7 +43,11 @@ class SecondViewController: UIViewController {
         animateSubviews()
     }
 
-    // MARK: - Public methods
+}
+
+// MARK: - Configuration
+
+extension SecondViewController {
 
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
         guard let photoStringURL = photo.downloadURL else { return }
@@ -59,12 +55,11 @@ class SecondViewController: UIViewController {
         pictureLabel.text = "\(NSLocalizedString("author", comment: "")) \(photo.author ?? "")"
         pictureImageView.image = photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL)
     }
+}
 
-    // MARK: - Private methods
+private extension SecondViewController {
 
-    // MARK: Configure
-
-    private func configureSecondVC() {
+    func configureVC() {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = .navigationBarTintColor
 
@@ -74,14 +69,32 @@ class SecondViewController: UIViewController {
         (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .all
     }
 
-    private func addSubviews() {
+    func configureSubviews() {
+        pictureLabel.textColor = .pictureLabelTextColor
+        pictureLabel.textAlignment = .center
+        pictureLabel.font = .pictureLabelFont
+
+        pictureImageView.contentMode = .scaleAspectFit
+    }
+
+    func addSubviews() {
         view.addSubview(pictureLabel)
         view.addSubview(pictureImageView)
     }
+}
 
-    private func setupConstraints() {
+// MARK: - Layout
+
+private extension SecondViewController {
+
+    func setupConstraints() {
         let indent: CGFloat = .pictureIndent
         let safeArea = view.safeAreaLayoutGuide
+
+        pictureLabel.clipsToBounds = true
+        pictureLabel.translatesAutoresizingMaskIntoConstraints = false
+        pictureImageView.clipsToBounds = true
+        pictureImageView.translatesAutoresizingMaskIntoConstraints = false
 
         let pictureLabelConstraints = [
             pictureLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: indent * 2),
@@ -98,10 +111,13 @@ class SecondViewController: UIViewController {
         NSLayoutConstraint.activate(pictureLabelConstraints)
         NSLayoutConstraint.activate(pictureImageViewConstraints)
     }
+}
 
-    // MARK: Animation methods
+// MARK: - Animation Implementation
 
-    private func animateSubviews() {
+private extension SecondViewController {
+
+    func animateSubviews() {
         UIView.transition(with: self.pictureLabel,
                           duration: 1.2,
                           options: [.transitionCrossDissolve, .curveEaseInOut],
@@ -110,5 +126,4 @@ class SecondViewController: UIViewController {
                           },
                           completion: nil)
     }
-
 }
