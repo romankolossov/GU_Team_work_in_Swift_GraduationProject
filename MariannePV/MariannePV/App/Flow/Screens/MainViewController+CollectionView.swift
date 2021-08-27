@@ -9,7 +9,7 @@ import UIKit
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
-    // MARK: - UICollectionViewDataSource protocol methods
+    // MARK: - UICollectionViewDataSource Implementation
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
@@ -33,7 +33,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
 
-    // MARK: - UICollectionViewDelegate protocol methods
+    // MARK: - UICollectionViewDelegate Implementation
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let photos = self.photos else { return }
@@ -50,7 +50,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 }
 
-// MARK: - Infinite Scrolling pattern methods
+// MARK: - Infinite Scrolling Implementation
 
 extension MainViewController: UICollectionViewDataSourcePrefetching {
 

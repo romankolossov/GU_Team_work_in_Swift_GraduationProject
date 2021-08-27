@@ -13,7 +13,7 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: - Public properties
 
     var publicPictureCellIdentifier: String {
-        pictureCellIdentifier
+        Configuration.pictureCellIdentifier
     }
     var publicCollectionViewPhotoService: CollectionViewPhotoService? {
         collectionViewPhotoService
@@ -30,8 +30,7 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: - Private properties
 
     private lazy var pictureCollectionView: UICollectionView = {
-        // Custom layout
-        let layout = PhotoLayout()
+        let layout = PhotoLayout() // Custom layout
         let safeArea = view.safeAreaLayoutGuide
 
         let cv = UICollectionView(
@@ -49,8 +48,6 @@ class MainViewController: UIViewController, AlertShowable {
 
         return cv
     }()
-
-    private let pictureCellIdentifier: String = "PictureCellIdentifier"
     private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
     private var collectionViewPhotoService: CollectionViewPhotoService?
@@ -74,18 +71,9 @@ class MainViewController: UIViewController, AlertShowable {
         configureMainVC()
     }
 
-    // MARK: - Actions
-
-    @objc private func refresh(_ sender: UIRefreshControl) {
-        loadData { [weak self] in
-            self?.refreshControl?.endRefreshing()
-        }
-        NetworkManager.shared.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
-    }
-
     // MARK: - Public methods
 
-    // MARK: Network method
+    // MARK: Network Load
 
     func loadPartData(from page: Int, completion: (() -> Void)? = nil) {
         let concurentQueue = DispatchQueue(
@@ -123,26 +111,7 @@ class MainViewController: UIViewController, AlertShowable {
 
     // MARK: - Private methods
 
-    // MARK: Configure
-
-    private func configureMainVC() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.navigationBarLargeTitleTextColor
-        ]
-        title = NSLocalizedString("mainVCName", comment: "Main view controller name")
-
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.navigationBarTitleTextColor
-        ]
-        (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
-    }
-
-    private func addSubviews() {
-        view.addSubview(pictureCollectionView)
-    }
-
-    // MARK: Network method
+    // MARK: Network Load
 
     private func loadData(completion: (() -> Void)? = nil) {
         let concurentQueue = DispatchQueue(
@@ -183,11 +152,47 @@ class MainViewController: UIViewController, AlertShowable {
         }
     }
 
-    // MARK: Pull-to-refresh pattern method
+}
 
-    private func setupRefreshControl() {
+// MARK: - Configuration
+
+private extension MainViewController {
+
+    enum Configuration {
+        static let pictureCellIdentifier = "com.picture.cell"
+    }
+
+    func configureMainVC() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.navigationBarLargeTitleTextColor
+        ]
+        title = NSLocalizedString("mainVCName", comment: "Main view controller name")
+
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.navigationBarTitleTextColor
+        ]
+        (UIApplication.shared.delegate as? AppDelegate)?.restrictRotation = .portrait
+    }
+
+    func addSubviews() {
+        view.addSubview(pictureCollectionView)
+    }
+}
+
+// MARK: - Pull-to-refresh Implementation
+
+private extension MainViewController {
+
+    @objc func refresh(_ sender: UIRefreshControl) {
+        loadData { [weak self] in
+            self?.refreshControl?.endRefreshing()
+        }
+        NetworkManager.shared.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
+    }
+
+    func setupRefreshControl() {
         refreshControl = UIRefreshControl()
-
         refreshControl?.attributedTitle = NSAttributedString(
             string: NSLocalizedString(
                 "reloadData", comment: ""),
@@ -201,5 +206,4 @@ class MainViewController: UIViewController, AlertShowable {
 
         pictureCollectionView.refreshControl = refreshControl
     }
-
 }
