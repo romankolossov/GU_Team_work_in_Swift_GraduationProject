@@ -34,8 +34,10 @@ extension PictureCollectionViewCell {
         guard let photoStringURL = photo.downloadURL else { return }
         animateSubviews()
 
-        pictureImageView.image = photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL)
         pictureLabel.text = photo.author
+        photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL) { [weak self] image in
+            self?.pictureImageView.image = image
+        }
     }
 }
 

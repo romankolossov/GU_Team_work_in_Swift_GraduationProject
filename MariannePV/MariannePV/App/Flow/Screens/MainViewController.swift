@@ -187,7 +187,7 @@ private extension MainViewController {
     func configureUI() {
         configureCollectionView()
         view.addSubview(pictureCollectionView)
-        setupConstraints() // To consider a possible implementation: pictureCollectionView.frame = view.bounds
+        setupConstraints() // Another a possible implementation: pictureCollectionView.frame = view.bounds
     }
 
     func configureVC() {
@@ -276,26 +276,3 @@ extension MainViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
     }
 }
-
-/* // Commented and leaved to consider as a possible alternative implementation.
- 
-    private lazy var pictureCollectionView: UICollectionView = {
-        let layout = PhotoLayout() // Custom layout
-        let safeArea = view.safeAreaLayoutGuide
-
-        let cv = UICollectionView(
-            frame: safeArea.layoutFrame,
-            collectionViewLayout: layout
-        )
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = .pictureCollectionViewBackgroundColor
-
-        cv.dataSource = self
-        cv.delegate = self
-        cv.prefetchDataSource = self
-
-        cv.register(PictureCollectionViewCell.self, forCellWithReuseIdentifier: publicPictureCellIdentifier)
-
-        return cv
-    }()
-*/

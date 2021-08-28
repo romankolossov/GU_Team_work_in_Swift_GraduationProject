@@ -19,7 +19,6 @@ class SecondViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         configureUI()
-        // setupConstraints()
     }
     @available(*, unavailable) required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -27,14 +26,14 @@ class SecondViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureVC()
-    }
-
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         setupConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureVC()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -51,7 +50,9 @@ extension SecondViewController {
         guard let photoStringURL = photo.downloadURL else { return }
 
         pictureLabel.text = "\(NSLocalizedString("author", comment: "")) \(photo.author ?? "")"
-        pictureImageView.image = photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL)
+        photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL) { [weak self] image in
+            self?.pictureImageView.image = image
+        }
     }
 }
 

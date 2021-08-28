@@ -45,7 +45,7 @@ class CollectionViewPhotoService {
 
     // MARK: Get Image
 
-    func getImage(atIndexPath indexPath: IndexPath, byUrl url: String) -> UIImage? {
+    func getImage(atIndexPath indexPath: IndexPath, byUrl url: String, completion: @escaping (UIImage?) -> Void) {
         var image: UIImage?
 
         if let uncachedImage = images[url] {
@@ -61,7 +61,9 @@ class CollectionViewPhotoService {
             // Load the image by its url from the Network and save it to cache
             loadImage(atIndexPath: indexPath, byUrl: url)
         }
-        return image
+        DispatchQueue.main.async {
+            completion(image)
+        }
     }
 }
 
