@@ -33,11 +33,11 @@ extension PictureCollectionViewCell {
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
         guard let photoStringURL = photo.downloadURL else { return }
 
-        pictureLabel.text = photo.author
         photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL) { [weak self] image in
             self?.pictureImageView.image = image
+            self?.pictureLabel.text = photo.author
+            self?.animateSubviews()
         }
-        animateSubviews()
     }
 }
 
@@ -99,7 +99,7 @@ private extension PictureCollectionViewCell {
     func animateSubviews() {
         UIView.transition(with: self.pictureLabel,
                           duration: 0.8,
-                          options: [.transitionFlipFromTop, .curveEaseInOut],
+                          options: [.transitionCrossDissolve, .curveEaseInOut],
                           animations: nil,
                           completion: nil)
     }

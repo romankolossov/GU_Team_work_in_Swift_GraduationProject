@@ -45,9 +45,9 @@ extension DetailViewController {
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
         guard let photoStringURL = photo.downloadURL else { return }
 
-        pictureLabel.text = "\(NSLocalizedString("author", comment: "")) \(photo.author ?? "")"
         photoService?.getImage(atIndexPath: indexPath, byUrl: photoStringURL) { [weak self] image in
             self?.pictureImageView.image = image
+            self?.pictureLabel.text = "\(NSLocalizedString("author", comment: "")) \(photo.author ?? "")"
         }
     }
 }
