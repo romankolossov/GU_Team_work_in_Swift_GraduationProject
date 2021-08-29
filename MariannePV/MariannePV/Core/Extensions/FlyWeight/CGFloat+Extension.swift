@@ -28,4 +28,7 @@ extension CGFloat {
     static let pictureLabelHeight: CGFloat = 24.0
     static let pictureIndent: CGFloat = 6.0
 
+    // MARK: - CollectionViewPhotoService
+
+    static let imageScaleToResize: CGFloat = 0.05
 }

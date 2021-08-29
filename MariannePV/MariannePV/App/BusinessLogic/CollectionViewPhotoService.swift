@@ -87,7 +87,7 @@ private extension CollectionViewPhotoService {
                 return
             }
             // MARK: TO DO: isLoading = false
-            guard let image = UIImage(data: data) else { return }
+            guard let image = UIImage(data: data)?.scaled(withScale: .imageScaleToResize) else { return }
 
             DispatchQueue.main.async { [weak self] in
                 guard (self?.images.count ?? 0) <= Int.imageAmountToKeepInRAMCache else {

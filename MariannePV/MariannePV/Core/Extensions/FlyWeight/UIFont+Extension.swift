@@ -26,5 +26,4 @@ extension UIFont {
     // MARK: Refresh Control
 
     static let refreshControlFont: UIFont = .systemFont(ofSize: 12)
-
 }
