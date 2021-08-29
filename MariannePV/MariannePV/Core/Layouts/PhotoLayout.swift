@@ -71,8 +71,8 @@ extension PhotoLayout {
     }
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        cachedAttributes.values.filter { atributes in
-            rect.intersects(atributes.frame)
+        cachedAttributes.values.filter { attributes in
+            rect.intersects(attributes.frame)
         }
     }
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class DetailViewController: UIViewController {
 
     // MARK: - Private Properties
 
@@ -19,17 +19,13 @@ class SecondViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         configureUI()
+        setupConstraints()
     }
     @available(*, unavailable) required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Lifecycle
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        setupConstraints()
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -44,7 +40,7 @@ class SecondViewController: UIViewController {
 
 // MARK: - Configuration
 
-extension SecondViewController {
+extension DetailViewController {
 
     func lookConfigure(with photo: PhotoElementData, photoService: CollectionViewPhotoService?, indexPath: IndexPath) {
         guard let photoStringURL = photo.downloadURL else { return }
@@ -56,7 +52,7 @@ extension SecondViewController {
     }
 }
 
-private extension SecondViewController {
+private extension DetailViewController {
 
     func configureUI() {
         configureSubviews()
@@ -85,7 +81,7 @@ private extension SecondViewController {
 
 // MARK: - Layout
 
-private extension SecondViewController {
+private extension DetailViewController {
 
     func setupConstraints() {
         let indent: CGFloat = .pictureIndent
@@ -115,7 +111,7 @@ private extension SecondViewController {
 
 // MARK: - Animation Implementation
 
-private extension SecondViewController {
+private extension DetailViewController {
 
     func animateSubviews() {
         UIView.transition(with: self.pictureLabel,

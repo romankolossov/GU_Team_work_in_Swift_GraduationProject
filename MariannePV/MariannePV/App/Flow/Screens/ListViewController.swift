@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class MainViewController: UIViewController, AlertShowable {
+class ListViewController: UIViewController, AlertShowable {
 
     // MARK: - Public Properties
 
@@ -53,8 +53,8 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: Network Load Data Partly used after the Prime Load done
 
     func loadPartData(from page: Int, completion: (() -> Void)? = nil) {
-        let concurentQueue = DispatchQueue(
-            label: "concurentQueueToLoadPartData",
+        let concurrentQueue = DispatchQueue(
+            label: "concurrentQueueToLoadPartData",
             qos: .default,
             attributes: .concurrent,
             autoreleaseFrequency: .inherit,
@@ -62,7 +62,7 @@ class MainViewController: UIViewController, AlertShowable {
         )
         isLoading = true
 
-        concurentQueue.async { [weak self] in
+        concurrentQueue.async { [weak self] in
             self?.networkManager.loadPartPhotos(from: page) { [weak self] result in
                 switch result {
                 case let .success(photoElements):
@@ -91,8 +91,8 @@ class MainViewController: UIViewController, AlertShowable {
     // MARK: Network Load Data Primally
 
     private func loadData(completion: (() -> Void)? = nil) {
-        let concurentQueue = DispatchQueue(
-            label: "concurentQueueToLoadData",
+        let concurrentQueue = DispatchQueue(
+            label: "concurrentQueueToLoadData",
             qos: .default,
             attributes: .concurrent,
             autoreleaseFrequency: .inherit,
@@ -100,7 +100,7 @@ class MainViewController: UIViewController, AlertShowable {
         )
         isLoading = true
 
-        concurentQueue.async { [weak self] in
+        concurrentQueue.async { [weak self] in
             self?.networkManager.loadPhotos { [weak self] result in
                 switch result {
                 case let .success(photoElements):
@@ -132,7 +132,7 @@ class MainViewController: UIViewController, AlertShowable {
 
 // MARK: - UITableViewDelegate & UITableViewDataSource Implementation
 
-extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
     // MARK: - UICollectionViewDataSource Implementation
 
@@ -164,7 +164,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let photos = self.photos else { return }
-        let secondVC = SecondViewController()
+        let secondVC = DetailViewController()
 
         let photoElementData = photos[indexPath.row]
 
@@ -178,7 +178,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 // MARK: - Configuration
 
-private extension MainViewController {
+private extension ListViewController {
 
     enum Configuration {
         static let pictureCellIdentifier = "com.picture.cell"
@@ -219,7 +219,7 @@ private extension MainViewController {
 
 // MARK: - Layout
 
-private extension MainViewController {
+private extension ListViewController {
 
     func setupConstraints() {
         pictureCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -233,7 +233,7 @@ private extension MainViewController {
 
 // MARK: - Pull-to-refresh Implementation
 
-private extension MainViewController {
+private extension ListViewController {
 
     @objc func refresh(_ sender: UIRefreshControl) {
         loadData { [weak self] in
@@ -261,7 +261,7 @@ private extension MainViewController {
 
 // MARK: - CollectionViewDataSourcePrefetching (Infinite Scrolling) Implementation
 
-extension MainViewController: UICollectionViewDataSourcePrefetching {
+extension ListViewController: UICollectionViewDataSourcePrefetching {
 
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         guard let photos = self.photos else { return }

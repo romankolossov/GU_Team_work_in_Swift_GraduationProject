@@ -22,7 +22,7 @@ class NetworkManager {
         case incorrectData
     }
     enum DecoderError: Error {
-        case failureInJSONdecoding
+        case failureInJSONDecoding
     }
 
     // MARK: - Public Properties
@@ -109,7 +109,7 @@ private extension NetworkManager {
                     let photos = try JSONDecoder().decode(PhotoQuery.self, from: data)
                     completion?(.success(photos))
                 } catch {
-                    completion?(.failure(DecoderError.failureInJSONdecoding))
+                    completion?(.failure(DecoderError.failureInJSONDecoding))
                 }
             } else if let error = error {
                 Logger.viewCycle.debug(

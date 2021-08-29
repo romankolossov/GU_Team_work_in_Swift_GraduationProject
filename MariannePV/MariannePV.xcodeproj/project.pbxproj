@@ -16,8 +16,8 @@
 		C85B9F94266B6C2300816C97 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F93266B6C2300816C97 /* RealmManager.swift */; };
 		C85B9F96266B6C3E00816C97 /* PhotoRealmCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F95266B6C3E00816C97 /* PhotoRealmCodable.swift */; };
 		C85B9F98266B6C7B00816C97 /* PictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F97266B6C7B00816C97 /* PictureCollectionViewCell.swift */; };
-		C85B9F9C266B6CBD00816C97 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F9B266B6CBD00816C97 /* MainViewController.swift */; };
-		C85B9FA0266B6CEB00816C97 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F9F266B6CEB00816C97 /* SecondViewController.swift */; };
+		C85B9F9C266B6CBD00816C97 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F9B266B6CBD00816C97 /* ListViewController.swift */; };
+		C85B9FA0266B6CEB00816C97 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9F9F266B6CEB00816C97 /* DetailViewController.swift */; };
 		C85B9FA2266B6D2000816C97 /* PhotoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9FA1266B6D2000816C97 /* PhotoLayout.swift */; };
 		C85B9FA4266B6EBD00816C97 /* NetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9FA3266B6EBD00816C97 /* NetworkManagerTests.swift */; };
 		C85B9FA8266DBBEE00816C97 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85B9FA7266DBBEE00816C97 /* UIColor+Extension.swift */; };
@@ -62,8 +62,8 @@
 		C85B9F93266B6C2300816C97 /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		C85B9F95266B6C3E00816C97 /* PhotoRealmCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoRealmCodable.swift; sourceTree = "<group>"; };
 		C85B9F97266B6C7B00816C97 /* PictureCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureCollectionViewCell.swift; sourceTree = "<group>"; };
-		C85B9F9B266B6CBD00816C97 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		C85B9F9F266B6CEB00816C97 /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		C85B9F9B266B6CBD00816C97 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		C85B9F9F266B6CEB00816C97 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		C85B9FA1266B6D2000816C97 /* PhotoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLayout.swift; sourceTree = "<group>"; };
 		C85B9FA3266B6EBD00816C97 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
 		C85B9FA7266DBBEE00816C97 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -263,8 +263,8 @@
 		C8980A162666D3B2009B26D3 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				C85B9F9B266B6CBD00816C97 /* MainViewController.swift */,
-				C85B9F9F266B6CEB00816C97 /* SecondViewController.swift */,
+				C85B9F9B266B6CBD00816C97 /* ListViewController.swift */,
+				C85B9F9F266B6CEB00816C97 /* DetailViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -502,14 +502,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C89809E32665874E009B26D3 /* MariannePV.xcdatamodeld in Sources */,
-				C85B9F9C266B6CBD00816C97 /* MainViewController.swift in Sources */,
+				C85B9F9C266B6CBD00816C97 /* ListViewController.swift in Sources */,
 				C85B9FAE266DC0F200816C97 /* Int+Extension.swift in Sources */,
 				C848BEBE26DB4A3900AA33DD /* UIImage+Extension.swift in Sources */,
 				C85B9FAA266DBC1F00816C97 /* UIFont+Extension.swift in Sources */,
 				C85B9F98266B6C7B00816C97 /* PictureCollectionViewCell.swift in Sources */,
 				C85B9F92266B6C0E00816C97 /* CollectionViewPhotoService.swift in Sources */,
 				C85B9FA2266B6D2000816C97 /* PhotoLayout.swift in Sources */,
-				C85B9FA0266B6CEB00816C97 /* SecondViewController.swift in Sources */,
+				C85B9FA0266B6CEB00816C97 /* DetailViewController.swift in Sources */,
 				C85B9FA8266DBBEE00816C97 /* UIColor+Extension.swift in Sources */,
 				C85B9F90266B6BF400816C97 /* NetworkManager.swift in Sources */,
 				C85B9FAC266DC08B00816C97 /* CGFloat+Extension.swift in Sources */,

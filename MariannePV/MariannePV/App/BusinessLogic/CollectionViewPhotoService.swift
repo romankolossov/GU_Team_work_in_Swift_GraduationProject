@@ -14,7 +14,7 @@ class CollectionViewPhotoService {
 
     // MARK: - Private Properties
 
-    // Image SSD cache files dirrectory to create with pathName
+    // Image SSD cache files directory to create with pathName
     private static let pathName: String = {
         let pathName = "images"
         guard let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
@@ -72,14 +72,14 @@ class CollectionViewPhotoService {
 private extension CollectionViewPhotoService {
 
     func loadImage(atIndexPath indexPath: IndexPath, byUrl url: String) {
-        let concurentQueue = DispatchQueue(
-            label: "concurentQueueToLoadAnImage",
+        let concurrentQueue = DispatchQueue(
+            label: "concurrentQueueToLoadAnImage",
             qos: .userInitiated,
             attributes: .concurrent,
             autoreleaseFrequency: .inherit,
             target: nil
         )
-        concurentQueue.async { [weak self] in
+        concurrentQueue.async { [weak self] in
             guard let imageURL = URL(string: url) else { return }
             // MARK: TO DO: isLoading = true
             guard let data = try? Data(contentsOf: imageURL) else {
@@ -126,11 +126,11 @@ private extension CollectionViewPhotoService {
     }
 
     func saveImageToFileCache(url: String, image: UIImage) {
-        guard let fileLocalyPath = getFilePath(url: url),
+        guard let fileLocalPath = getFilePath(url: url),
               let data = image.pngData()
             else { return }
 
-        FileManager.default.createFile(atPath: fileLocalyPath, contents: data, attributes: nil)
+        FileManager.default.createFile(atPath: fileLocalPath, contents: data, attributes: nil)
     }
 
     func getImageFromFileCache(url: String) -> UIImage? {
