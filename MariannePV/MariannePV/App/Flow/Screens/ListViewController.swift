@@ -25,14 +25,15 @@ class ListViewController: UIViewController, AlertShowable {
         collectionViewLayout: PhotoLayout()
     )
     private let networkManager: NetworkManager
-    private let realmManager = RealmManager.shared
+    private let realmManager: RealmManager?
     private var collectionViewPhotoService: CollectionViewPhotoService?
     private var refreshControl: UIRefreshControl?
 
     // MARK: - Initializers
 
-    init(networkManager: NetworkManager) {
+    init(networkManager: NetworkManager, realmManager: RealmManager?) {
         self.networkManager = networkManager
+        self.realmManager = realmManager
         super.init(nibName: nil, bundle: nil)
     }
     @available(*, unavailable) required init?(coder: NSCoder) {
