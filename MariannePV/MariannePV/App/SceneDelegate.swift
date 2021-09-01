@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         window?.windowScene = windowScene
 
-        let rootViewController = ListViewController()
+        let rootViewController = ListViewController(networkManager: NetworkManager.shared)
         let navigationVC = UINavigationController(rootViewController: rootViewController)
 
         window?.rootViewController = navigationVC

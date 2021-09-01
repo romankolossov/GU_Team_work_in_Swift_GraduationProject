@@ -24,10 +24,20 @@ class ListViewController: UIViewController, AlertShowable {
         frame: .zero,
         collectionViewLayout: PhotoLayout()
     )
-    private let networkManager = NetworkManager.shared
+    private let networkManager: NetworkManager
     private let realmManager = RealmManager.shared
     private var collectionViewPhotoService: CollectionViewPhotoService?
     private var refreshControl: UIRefreshControl?
+
+    // MARK: - Initializers
+
+    init(networkManager: NetworkManager) {
+        self.networkManager = networkManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    @available(*, unavailable) required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Lifecycle
 
@@ -236,10 +246,10 @@ private extension ListViewController {
 private extension ListViewController {
 
     @objc func refresh(_ sender: UIRefreshControl) {
+        networkManager.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
         loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
-        NetworkManager.shared.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
     }
 
     func setupRefreshControl() {
