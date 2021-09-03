@@ -18,6 +18,7 @@ protocol NetworkClient {
 
     func networkRequest(for page: Int, completion: @escaping Completion)
 }
+typealias Item = PhotoQuery
 
 // MARK: - Network Request & Data Decoding
 
@@ -26,7 +27,8 @@ final class ItemNetworkClient: NetworkClient {
     enum DecoderError: Error {
         case failureInJSONDecoding
     }
-    typealias Response = PhotoQuery
+    typealias Response = Item
+
     // URL Session
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
@@ -60,7 +62,7 @@ final class ItemNetworkClient: NetworkClient {
         let dataTask = session.dataTask(with: request) { (data, _, error) in
             if let data = data {
                 do {
-                    let photos = try JSONDecoder().decode(PhotoQuery.self, from: data)
+                    let photos = try JSONDecoder().decode(Item.self, from: data)
                     completion(photos, nil)
                 } catch {
                     completion(nil, DecoderError.failureInJSONDecoding)
@@ -83,7 +85,7 @@ final class NetworkService<C: NetworkClient> {
     enum ServiceError: Error {
         case badResponse
     }
-    typealias Completion = ([PhotoElement]?, Error?) -> Void
+    typealias Completion = (Item?, Error?) -> Void
 
     var nextFromPage: Int = .nextPageAfterFirstToStartLoadingFrom
     private let client: C
@@ -102,7 +104,7 @@ extension NetworkService {
         client.networkRequest(for: page) { (response, error) in
             if let error = error {
                 completion(nil, error)
-            } else if let item = response as? [PhotoElement] {
+            } else if let item = response as? Item {
                 completion(item, nil)
             } else { completion(nil, ServiceError.badResponse)
             }
@@ -114,7 +116,7 @@ extension NetworkService {
         client.networkRequest(for: page) { (response, error) in
             if let error = error {
                 completion(nil, error)
-            } else if let item = response as? [PhotoElement] {
+            } else if let item = response as? Item {
                 completion(item, nil)
             } else { completion(nil, ServiceError.badResponse)
             }
