@@ -27,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
 
         let rootViewController = ListViewController(
+            networkService: NetworkService(client: ItemNetworkClient()),
             realmManager: RealmManager.shared
         )
         let navigationVC = UINavigationController(rootViewController: rootViewController)

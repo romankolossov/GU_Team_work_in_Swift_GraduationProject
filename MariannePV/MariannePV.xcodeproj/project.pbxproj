@@ -118,6 +118,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C818494526E24E46006FAA88 /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+				C85B9F91266B6C0E00816C97 /* CollectionViewPhotoService.swift */,
+			);
+			path = Photo;
+			sourceTree = "<group>";
+		};
+		C818494626E24E81006FAA88 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C8980A102666D2E5009B26D3 /* Network */,
+				C8980A112666D2F1009B26D3 /* Realm */,
+				C818494526E24E46006FAA88 /* Photo */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		C85B9FA5266B762600816C97 /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,9 +222,7 @@
 		C8980A0F2666D2A7009B26D3 /* BusinessLogic */ = {
 			isa = PBXGroup;
 			children = (
-				C85B9F91266B6C0E00816C97 /* CollectionViewPhotoService.swift */,
-				C8980A102666D2E5009B26D3 /* Network */,
-				C8980A112666D2F1009B26D3 /* Realm */,
+				C818494626E24E81006FAA88 /* Services */,
 			);
 			path = BusinessLogic;
 			sourceTree = "<group>";

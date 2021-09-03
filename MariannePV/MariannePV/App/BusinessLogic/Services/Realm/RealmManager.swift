@@ -66,5 +66,4 @@ class RealmManager {
     func refresh () {
         realm.refresh()
     }
-
 }

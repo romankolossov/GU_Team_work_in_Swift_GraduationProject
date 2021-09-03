@@ -29,7 +29,7 @@ class ListViewController: UIViewController, AlertShowable {
         frame: .zero,
         collectionViewLayout: PhotoLayout()
     )
-    private let networkService = NetworkService(client: ItemNetworkClient())
+    var networkService: NetworkService<ItemNetworkClient>
     private let realmManager: RealmManager?
     private var collectionViewPhotoService: CollectionViewPhotoService?
     private var refreshControl: UIRefreshControl?
@@ -37,7 +37,8 @@ class ListViewController: UIViewController, AlertShowable {
 
     // MARK: - Initializers
 
-    init(realmManager: RealmManager?) {
+    init(networkService: NetworkService<ItemNetworkClient>, realmManager: RealmManager?) {
+        self.networkService = networkService
         self.realmManager = realmManager
         super.init(nibName: nil, bundle: nil)
     }
