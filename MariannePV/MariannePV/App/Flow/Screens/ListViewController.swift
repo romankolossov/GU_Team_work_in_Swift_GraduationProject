@@ -9,6 +9,11 @@ import UIKit
 import RealmSwift
 
 class ListViewController: UIViewController, AlertShowable {
+    // Error handling
+    enum LoadDataError: Error {
+        case dataLoadFailure
+        case paginatedDataLoadFailure
+    }
 
     // MARK: - Public Properties
 
@@ -24,15 +29,15 @@ class ListViewController: UIViewController, AlertShowable {
         frame: .zero,
         collectionViewLayout: PhotoLayout()
     )
-    private let networkManager: NetworkManager
+    private let networkService = NetworkService(client: ItemNetworkClient())
     private let realmManager: RealmManager?
     private var collectionViewPhotoService: CollectionViewPhotoService?
     private var refreshControl: UIRefreshControl?
+    // typealias C = NetworkClient
 
     // MARK: - Initializers
 
-    init(networkManager: NetworkManager, realmManager: RealmManager?) {
-        self.networkManager = networkManager
+    init(realmManager: RealmManager?) {
         self.realmManager = realmManager
         super.init(nibName: nil, bundle: nil)
     }
@@ -61,7 +66,7 @@ class ListViewController: UIViewController, AlertShowable {
 
     // MARK: - Public Methods
 
-    // MARK: Network Load Data Partly used after the Prime Load done
+    // MARK: Network Pagination Data Load used after the Prime Load done
 
     func loadPartData(from page: Int, completion: (() -> Void)? = nil) {
         let concurrentQueue = DispatchQueue(
@@ -74,22 +79,29 @@ class ListViewController: UIViewController, AlertShowable {
         isLoading = true
 
         concurrentQueue.async { [weak self] in
-            self?.networkManager.loadPartPhotos(from: page) { [weak self] result in
-                switch result {
-                case let .success(photoElements):
-                    let nextPhotos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
+            self?.networkService.fetchPaginatedItems(from: page) { [weak self] (response, error) in
+                if let error = error {
+                    self?.isLoading = false
+                    DispatchQueue.main.async { [weak self] in
+                        self?.showAlert(
+                            title: NSLocalizedString("error", comment: ""),
+                            message: error.localizedDescription
+                        )
+                    }
+                } else if let response = response {
+                    let nextPhotos: [PhotoElementData] = response.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
                         try? self?.realmManager?.add(objects: nextPhotos)
                         self?.pictureCollectionView.reloadData()
                         self?.isLoading = false
                         completion?()
                     }
-                case let .failure(error):
+                } else {
                     self?.isLoading = false
                     DispatchQueue.main.async { [weak self] in
                         self?.showAlert(
                             title: NSLocalizedString("error", comment: ""),
-                            message: error.localizedDescription
+                            message: LoadDataError.paginatedDataLoadFailure.localizedDescription
                         )
                     }
                 }
@@ -112,10 +124,17 @@ class ListViewController: UIViewController, AlertShowable {
         isLoading = true
 
         concurrentQueue.async { [weak self] in
-            self?.networkManager.loadPhotos { [weak self] result in
-                switch result {
-                case let .success(photoElements):
-                    let photos: [PhotoElementData] = photoElements.map { PhotoElementData(photoElement: $0) }
+            self?.networkService.fetchItems { [weak self] (response, error) in
+                if let error = error {
+                    self?.isLoading = false
+                    DispatchQueue.main.async { [weak self] in
+                        self?.showAlert(
+                            title: NSLocalizedString("error", comment: ""),
+                            message: error.localizedDescription
+                        )
+                    }
+                } else if let response = response {
+                    let photos: [PhotoElementData] = response.map { PhotoElementData(photoElement: $0) }
                     DispatchQueue.main.async { [weak self] in
                         // Clear dictionary and Realm and reload collection view.
                         self?.collectionViewPhotoService?.images.removeAll()
@@ -127,12 +146,12 @@ class ListViewController: UIViewController, AlertShowable {
                         self?.isLoading = false
                         completion?()
                     }
-                case let .failure(error):
+                } else {
                     self?.isLoading = false
                     DispatchQueue.main.async { [weak self] in
                         self?.showAlert(
                             title: NSLocalizedString("error", comment: ""),
-                            message: error.localizedDescription
+                            message: LoadDataError.dataLoadFailure.localizedDescription
                         )
                     }
                 }
@@ -180,8 +199,8 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let photoElementData = photos[indexPath.row]
 
         secondVC.lookConfigure(with: photoElementData,
-                           photoService: collectionViewPhotoService,
-                           indexPath: indexPath)
+                               photoService: collectionViewPhotoService,
+                               indexPath: indexPath)
 
         self.navigationController?.pushViewController(secondVC, animated: true)
     }
@@ -247,7 +266,7 @@ private extension ListViewController {
 private extension ListViewController {
 
     @objc func refresh(_ sender: UIRefreshControl) {
-        networkManager.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
+        networkService.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
         loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
@@ -280,7 +299,7 @@ extension ListViewController: UICollectionViewDataSourcePrefetching {
 
         if maxIndex > (photos.count - Int.decrementToDefineStartLoading),
            !isLoading {
-            self.loadPartData(from: NetworkManager.shared.nextFromPage)
+            self.loadPartData(from: networkService.nextFromPage)
         }
     }
 
