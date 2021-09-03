@@ -16,9 +16,10 @@ protocol NetworkClient {
     associatedtype Response
     typealias Completion = (Response?, Error?) -> Void
 
-    func networkRequest(for page: Int, completion: @escaping Completion)
+    func networkRequest<P: ItemRequestParams>(params: P, completion: @escaping Completion)
 }
 typealias Item = PhotoQuery
+typealias ItemRequestParams = BinaryInteger // Page number to load from.
 
 // MARK: - Network Request & Data Decoding
 
@@ -37,9 +38,10 @@ final class ItemNetworkClient: NetworkClient {
         return session
     }()
 
-    func networkRequest(for page: Int, completion: @escaping Completion) {
-        // Lorem Picsum URL used, ex. https://picsum.photos/v2/list?page=2&limit=100
-        guard page >= 1 else { return }
+    func networkRequest<P: ItemRequestParams>(params: P, completion: @escaping Completion) {
+        // Here is a real network request is done
+        // From: Lorem Picsum URL, ex. https://picsum.photos/v2/list?page=2&limit=100
+        guard params >= 1 else { return }
 
         // URL constructor
         var urlConstructor = URLComponents()
@@ -49,7 +51,7 @@ final class ItemNetworkClient: NetworkClient {
         urlConstructor.path = "/v2/list"
 
         urlConstructor.queryItems = [
-            URLQueryItem(name: "page", value: "\(page)"),
+            URLQueryItem(name: "page", value: "\(params)"), // Page number to load from.
             URLQueryItem(name: "limit", value: "30")
         ]
         guard let url = urlConstructor.url else { return }
@@ -87,7 +89,7 @@ final class NetworkService<C: NetworkClient> {
     }
     typealias Completion = (Item?, Error?) -> Void
 
-    var nextFromPage: Int = .nextPageAfterFirstToStartLoadingFrom
+    var pageToLoadFrom: Int = .pageFollowingAfterFirst
     private let client: C
 
     init(client: C) {
@@ -99,9 +101,9 @@ extension NetworkService {
 
     // Load photos primally.
     func fetchItems(completion: @escaping Completion) {
-        let page: Int = 1
+        let firstPage: Int = 1
 
-        client.networkRequest(for: page) { (response, error) in
+        client.networkRequest(params: firstPage) { (response, error) in
             if let error = error {
                 completion(nil, error)
             } else if let item = response as? Item {
@@ -112,8 +114,8 @@ extension NetworkService {
     }
 
     // Load photos partly page by page. Used after the prime load done.
-    func fetchPaginatedItems(from page: Int, completion: @escaping Completion) {
-        client.networkRequest(for: page) { (response, error) in
+    func fetchPaginatedItems(at index: Int, completion: @escaping Completion) {
+        client.networkRequest(params: index) { (response, error) in
             if let error = error {
                 completion(nil, error)
             } else if let item = response as? Item {
@@ -121,7 +123,7 @@ extension NetworkService {
             } else { completion(nil, ServiceError.badResponse)
             }
         }
-        // Logger.viewCycle.debug("Photos loaded from page: \(self.nextFromPage)")
-        nextFromPage = page + 1
+        // Logger.viewCycle.debug("Photos loaded from page: \(self.pageToLoadFrom)")
+        pageToLoadFrom = index + 1
     }
 }

@@ -80,7 +80,7 @@ class ListViewController: UIViewController, AlertShowable {
         isLoading = true
 
         concurrentQueue.async { [weak self] in
-            self?.networkService.fetchPaginatedItems(from: page) { [weak self] (response, error) in
+            self?.networkService.fetchPaginatedItems(at: page) { [weak self] (response, error) in
                 if let error = error {
                     self?.isLoading = false
                     DispatchQueue.main.async { [weak self] in
@@ -267,7 +267,7 @@ private extension ListViewController {
 private extension ListViewController {
 
     @objc func refresh(_ sender: UIRefreshControl) {
-        networkService.nextFromPage = .nextPageAfterFirstToStartLoadingFrom
+        networkService.pageToLoadFrom = .pageFollowingAfterFirst
         loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
@@ -300,7 +300,7 @@ extension ListViewController: UICollectionViewDataSourcePrefetching {
 
         if maxIndex > (photos.count - Int.decrementToDefineStartLoading),
            !isLoading {
-            self.loadPartData(from: networkService.nextFromPage)
+            self.loadPartData(from: networkService.pageToLoadFrom)
         }
     }
 

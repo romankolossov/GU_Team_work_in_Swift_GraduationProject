@@ -17,7 +17,7 @@ extension Int {
 
     // MARK: - NetworkManager, MainVC
 
-    static let nextPageAfterFirstToStartLoadingFrom: Int = 2
+    static let pageFollowingAfterFirst: Int = 2
 
     // MARK: - UICollectionViewDataSourcePrefetching
 
