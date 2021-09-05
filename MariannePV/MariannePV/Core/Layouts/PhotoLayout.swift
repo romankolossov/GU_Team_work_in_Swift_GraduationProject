@@ -83,4 +83,5 @@ extension PhotoLayout {
     override var collectionViewContentSize: CGSize {
         CGSize(width: self.collectionView?.bounds.size.width ?? 0, height: self.totalCellHeight)
     }
+
 }

@@ -11,6 +11,7 @@ import OSLog
 extension Logger {
     private static var subsystem = Bundle.main.bundleIdentifier ?? ""
 
-    // Logs the view cycles like viewDidLoad
+    // Logs the view cycles like viewDidLoad.
     static let viewCycle = Logger(subsystem: subsystem, category: "viewCycle")
+
 }

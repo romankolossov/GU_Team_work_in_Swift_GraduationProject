@@ -36,6 +36,7 @@ class DetailViewController: UIViewController {
         super.viewDidAppear(animated)
         animateSubviews()
     }
+
 }
 
 // MARK: - Configuration
@@ -50,6 +51,7 @@ extension DetailViewController {
             self?.pictureLabel.text = "\(NSLocalizedString("author", comment: "")) \(photo.author ?? "")"
         }
     }
+
 }
 
 private extension DetailViewController {
@@ -77,6 +79,7 @@ private extension DetailViewController {
 
         pictureImageView.contentMode = .scaleAspectFit
     }
+
 }
 
 // MARK: - Layout
@@ -107,6 +110,7 @@ private extension DetailViewController {
         NSLayoutConstraint.activate(pictureLabelConstraints)
         NSLayoutConstraint.activate(pictureImageViewConstraints)
     }
+
 }
 
 // MARK: - Animation Implementation
@@ -122,4 +126,5 @@ private extension DetailViewController {
                           },
                           completion: nil)
     }
+
 }

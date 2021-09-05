@@ -14,7 +14,7 @@ class CollectionViewPhotoService {
 
     // MARK: - Private Properties
 
-    // Image SSD cache files directory to create with pathName
+    // Image SSD cache files directory to create with pathName.
     private static let pathName: String = {
         let pathName = "images"
         guard let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
@@ -27,10 +27,10 @@ class CollectionViewPhotoService {
         }
         return pathName
     }()
-    // Image RAM cache dictionary
+    // Image RAM cache dictionary.
     var images = [String: UIImage]()
 
-    // Image SSD cache files life time (in sec.)
+    // Image SSD cache files life time (in sec.).
     private let cacheLifeTime: TimeInterval = 1 * 60 * 60
     // Container to refresh
     private let container: UICollectionView
@@ -56,9 +56,9 @@ class CollectionViewPhotoService {
             image = uncachedImage
         } else {
             Logger.viewCycle.debug("\(url) : Network load")
-            // Place placeholder image while the image is loading from the Network
+            // Place placeholder image while the image is loading from the Network.
             image = UIImage(named: "loadingBarSmile")
-            // Load the image by its url from the Network and save it to cache
+            // Load the image by its url from the Network and save it to cache.
             loadImage(atIndexPath: indexPath, byUrl: url)
         }
         DispatchQueue.main.async {
@@ -108,7 +108,7 @@ private extension CollectionViewPhotoService {
 
 private extension CollectionViewPhotoService {
 
-    // Get an image cache file path basing on its url
+    // Get an image cache file path basing on its url.
     func getFilePath(url: String) -> String? {
         guard let cashesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
             else { return nil }
@@ -154,4 +154,5 @@ private extension CollectionViewPhotoService {
 
         return image
     }
+
 }

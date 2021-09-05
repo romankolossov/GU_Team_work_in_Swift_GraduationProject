@@ -7,18 +7,18 @@
 */
 
 //MARK: TO DO
-// TabBarController
+// TabBarController.
 
 "mainTab" = "Фотографии";
 "favoritesTab" = "Избранное";
 
-// MainViewController
+// MainViewController.
 
 "mainVCName" = "Фото Lorem";
 "reloadData" = "Загрузка фотографий...";
 
 //MARK: TO DO
-// FirstViewController
+// FirstViewController.
 
 "aboutAppHeader" = "О ПРИЛОЖЕНИИ";
 "picturesHeader" = "ФОТОГРАФИИ";
@@ -31,12 +31,12 @@
 "nextButton" = "ДАЛЕЕ";
 "doneButton" = "ГОТОВО";
 
-// SecondViewController
+// SecondViewController.
 
 "author" = "автор:";
 
 //MARK: TO DO
-// FavoritePicturesViewController
+// FavoritePicturesViewController.
 
 "favoritePicturesVCName" = "Избранные фотографии";
 

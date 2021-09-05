@@ -7,18 +7,18 @@
 */
 
 //MARK: TO DO
-// TabBarController
+// TabBarController.
 
 "mainTab" = "Pictures";
 "favoritesTab" = "Favorites";
 
-// MainViewController
+// MainViewController.
 
 "mainVCName" = "Lorem photos";
 "reloadData" = "Reloading data...";
 
 //MARK: TO DO
-// FirstViewController
+// FirstViewController.
 
 "aboutAppHeader" = "ABOUT";
 "picturesHeader" = "PHOTOS";
@@ -31,12 +31,12 @@
 "nextButton" = "NEXT";
 "doneButton" = "DONE";
 
-// SecondViewController
+// SecondViewController.
 
 "author" = "by";
 
 //MARK: TO DO
-// FavoritePicturesViewController
+// FavoritePicturesViewController.
 
 "favoritePicturesVCName" = "Favorites";
 

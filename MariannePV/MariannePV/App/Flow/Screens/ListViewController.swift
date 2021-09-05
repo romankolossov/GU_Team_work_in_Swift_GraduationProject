@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 
 class ListViewController: UIViewController, AlertShowable {
-    // Error handling
+    // Error handling.
     enum LoadDataError: Error {
         case dataLoadFailure
         case paginatedDataLoadFailure
@@ -80,7 +80,7 @@ class ListViewController: UIViewController, AlertShowable {
         isLoading = true
 
         concurrentQueue.async { [weak self] in
-            self?.networkService.fetchPaginatedItems(at: page) { [weak self] (response, error) in
+            self?.networkService.fetchPaginatedItem(at: page) { [weak self] (response, error) in
                 if let error = error {
                     self?.isLoading = false
                     DispatchQueue.main.async { [weak self] in
@@ -125,7 +125,7 @@ class ListViewController: UIViewController, AlertShowable {
         isLoading = true
 
         concurrentQueue.async { [weak self] in
-            self?.networkService.fetchItems { [weak self] (response, error) in
+            self?.networkService.fetchItem { [weak self] (response, error) in
                 if let error = error {
                     self?.isLoading = false
                     DispatchQueue.main.async { [weak self] in
@@ -159,6 +159,7 @@ class ListViewController: UIViewController, AlertShowable {
             }
         }
     }
+
 }
 
 // MARK: - UITableViewDelegate & UITableViewDataSource Implementation
@@ -205,6 +206,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
         self.navigationController?.pushViewController(secondVC, animated: true)
     }
+
 }
 
 // MARK: - Configuration
@@ -246,6 +248,7 @@ private extension ListViewController {
             forCellWithReuseIdentifier: Configuration.pictureCellIdentifier
         )
     }
+
 }
 
 // MARK: - Layout
@@ -260,6 +263,7 @@ private extension ListViewController {
         pictureCollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         pictureCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
+
 }
 
 // MARK: - Pull-to-refresh Implementation
@@ -288,6 +292,7 @@ private extension ListViewController {
 
         pictureCollectionView.refreshControl = refreshControl
     }
+
 }
 
 // MARK: - CollectionViewDataSourcePrefetching (Infinite Scrolling) Implementation
@@ -306,4 +311,5 @@ extension ListViewController: UICollectionViewDataSourcePrefetching {
 
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
     }
+
 }

@@ -31,4 +31,5 @@ extension CGFloat {
     // MARK: - CollectionViewPhotoService
 
     static let imageScaleToResize: CGFloat = 0.05
+
 }

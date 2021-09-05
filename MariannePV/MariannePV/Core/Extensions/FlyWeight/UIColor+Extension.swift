@@ -36,4 +36,5 @@ extension UIColor {
 
     static let alertTitleTextColor: UIColor = .systemPurple
     static let alertViewTintColor: UIColor = .systemPurple
+
 }

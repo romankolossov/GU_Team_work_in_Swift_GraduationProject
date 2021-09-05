@@ -26,8 +26,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         window?.windowScene = windowScene
 
+        // Item client for Network service.
+        let client = ItemNetworkClient()
+
+        // Initialize List VC as a root VC with DI of Network service & Realm manager.
         let rootViewController = ListViewController(
-            networkService: NetworkService(client: ItemNetworkClient()),
+            networkService: NetworkService<ItemNetworkClient>(client: client),
             realmManager: RealmManager.shared
         )
         let navigationVC = UINavigationController(rootViewController: rootViewController)

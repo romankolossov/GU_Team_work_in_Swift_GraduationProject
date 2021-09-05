@@ -24,6 +24,7 @@ class PictureCollectionViewCell: UICollectionViewCell {
     @available(*, unavailable) required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
 }
 
 // MARK: - Configuration
@@ -39,6 +40,7 @@ extension PictureCollectionViewCell {
             self?.animateSubviews()
         }
     }
+
 }
 
 private extension PictureCollectionViewCell {
@@ -63,6 +65,7 @@ private extension PictureCollectionViewCell {
 
         pictureImageView.contentMode = .scaleAspectFit
     }
+
 }
 
 // MARK: - Layout
@@ -90,6 +93,7 @@ private extension PictureCollectionViewCell {
             pictureImageView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -indent)
         ])
     }
+
 }
 
 // MARK: - Animation Implementation
@@ -103,4 +107,5 @@ private extension PictureCollectionViewCell {
                           animations: nil,
                           completion: nil)
     }
+
 }

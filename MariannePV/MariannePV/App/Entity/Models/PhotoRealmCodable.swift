@@ -31,6 +31,7 @@ class PhotoElementData: Object {
     override required init() {
         super.init()
     }
+
 }
 
 // MARK: - PhotoElement Realm ready
@@ -74,6 +75,7 @@ class PhotoElement: Object, Codable {
     override required init() {
         super.init()
     }
+
 }
 
 typealias PhotoQuery = [PhotoElement]

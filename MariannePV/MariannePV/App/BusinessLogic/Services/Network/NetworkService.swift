@@ -24,13 +24,13 @@ typealias ItemRequestParams = BinaryInteger // Page number to load from.
 // MARK: - Network Request & Data Decoding
 
 final class ItemNetworkClient: NetworkClient {
-    // Error handling
+    // Error handling.
     enum DecoderError: Error {
         case failureInJSONDecoding
     }
     typealias Response = Item
 
-    // URL Session
+    // URL Session.
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
         // configuration.allowsCellularAccess = false
@@ -39,11 +39,11 @@ final class ItemNetworkClient: NetworkClient {
     }()
 
     func networkRequest<P: ItemRequestParams>(params: P, completion: @escaping Completion) {
-        // Here is a real network request is done
-        // From: Lorem Picsum URL, ex. https://picsum.photos/v2/list?page=2&limit=100
+        // Here is a real network request is done with
+        // Lorem Picsum URL, ex. https://picsum.photos/v2/list?page=2&limit=100
         guard params >= 1 else { return }
 
-        // URL constructor
+        // URL constructor.
         var urlConstructor = URLComponents()
 
         urlConstructor.scheme = "https"
@@ -78,12 +78,34 @@ final class ItemNetworkClient: NetworkClient {
         }
         dataTask.resume()
     }
+
+}
+
+// MARK: - Mock Network Client
+
+final class MockNetworkClient<R>: NetworkClient {
+    enum MockNetworkClientError: Error {
+        case stubError
+    }
+    typealias Response = R
+    typealias Completion = (Response?, Error?) -> Void
+
+    var stubError = false
+    var stubResponse: R?
+
+    func networkRequest<P: ItemRequestParams>(params: P, completion: @escaping Completion) {
+        if stubError {
+            completion(nil, MockNetworkClientError.stubError)
+        } else { completion(stubResponse, nil)
+        }
+    }
+
 }
 
 // MARK: - Load Photo Items (or photo URLs, in order by using them after to get photos itself)
 
 final class NetworkService<C: NetworkClient> {
-    // Error handling
+    // Error handling.
     enum ServiceError: Error {
         case badResponse
     }
@@ -95,12 +117,13 @@ final class NetworkService<C: NetworkClient> {
     init(client: C) {
         self.client = client
     }
+
 }
 
 extension NetworkService {
 
     // Load photos primally.
-    func fetchItems(completion: @escaping Completion) {
+    func fetchItem(completion: @escaping Completion) {
         let firstPage: Int = 1
 
         client.networkRequest(params: firstPage) { (response, error) in
@@ -114,7 +137,7 @@ extension NetworkService {
     }
 
     // Load photos partly page by page. Used after the prime load done.
-    func fetchPaginatedItems(at index: Int, completion: @escaping Completion) {
+    func fetchPaginatedItem(at index: Int, completion: @escaping Completion) {
         client.networkRequest(params: index) { (response, error) in
             if let error = error {
                 completion(nil, error)
@@ -126,4 +149,5 @@ extension NetworkService {
         // Logger.viewCycle.debug("Photos loaded from page: \(self.pageToLoadFrom)")
         pageToLoadFrom = index + 1
     }
+
 }
